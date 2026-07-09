@@ -1,0 +1,21 @@
+:root {
+  --color-mint: #83d4b3;
+  --color-mint-dark: #55ba91;
+  --color-mint-deep: #48a17d;
+  --color-mint-shadow: #62bc98;
+  --color-mint-soft: #e4f6ef;
+  --color-mint-muted: #c4dbd2;
+  --color-gold: #e3d578;
+  --color-gray: #848484;
+  --color-border: #ececec;
+  --color-white: #ffffff;
+  --font-display: "Montserrat Alternates", Inter, sans-serif;
+  --font-body: Inter, sans-serif;
+  --page-max-width: 1580px;
+  --nav-max-width: 1680px;
+  --radius-card: 47px;
+  --radius-inner: 32px;
+  --radius-field: 16px;
+  --shadow-card: 0 18px 32px rgba(98, 188, 152, 0.24);
+  --shadow-glow: 0 28px 48px rgba(72, 161, 125, 0.24);
+}

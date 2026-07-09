@@ -1,0 +1,59 @@
+@import './tokens.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    min-width: 320px;
+    margin: 0;
+    color: var(--color-gray);
+    background: var(--color-white);
+    font-family: var(--font-body);
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  button,
+  input,
+  textarea,
+  select {
+    font: inherit;
+  }
+
+  img,
+  picture,
+  svg {
+    display: block;
+    max-width: 100%;
+  }
+}
+
+@layer components {
+  .site-shell {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    margin-inline: auto;
+    overflow: hidden;
+    background: var(--color-white);
+  }
+
+  .aurora-container {
+    width: min(100% - 2rem, var(--page-max-width));
+    margin-inline: auto;
+  }
+
+  .aurora-section-title {
+    color: var(--color-mint);
+    font-family: var(--font-display);
+    font-weight: 900;
+    line-height: 1.12;
+  }
+}
