@@ -25,6 +25,7 @@ export interface ServiceCard extends IconCard {
 export interface ProcessStep {
   readonly index: number;
   readonly title: string;
+  readonly description: string;
 }
 
 export interface JourneyStep {

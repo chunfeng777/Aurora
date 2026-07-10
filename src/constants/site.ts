@@ -153,12 +153,36 @@ export const processHeading: SectionHeading = {
 };
 
 export const processSteps: readonly ProcessStep[] = [
-  { index: 1, title: 'Initial Consultation' },
-  { index: 2, title: 'Strategy & Planning' },
-  { index: 3, title: 'Clinic & Partner Matching' },
-  { index: 4, title: 'Medical Process' },
-  { index: 5, title: 'Pregnancy & Preparation' },
-  { index: 6, title: 'Birth & Post-Birth Support' },
+  {
+    index: 1,
+    title: 'Initial Consultation',
+    description: 'Share your goals, preferences, and timeline in a private consultation.',
+  },
+  {
+    index: 2,
+    title: 'Strategy & Planning',
+    description: 'Build a personalized strategy with clear priorities, partners, and next steps.',
+  },
+  {
+    index: 3,
+    title: 'Clinic & Partner Matching',
+    description: 'Connect with carefully vetted clinics, specialists, and agencies.',
+  },
+  {
+    index: 4,
+    title: 'Medical Process',
+    description: 'Coordinate procedures, timelines, and communication.',
+  },
+  {
+    index: 5,
+    title: 'Pregnancy & Preparation',
+    description: 'Monitor progress and prepare for your journey to the U.S.',
+  },
+  {
+    index: 6,
+    title: 'Birth & Post-Birth Support',
+    description: 'Manage documentation, logistics, and post-birth arrangements.',
+  },
 ];
 
 export const journeyHeading: SectionHeading = {
