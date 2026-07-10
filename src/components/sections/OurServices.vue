@@ -14,45 +14,154 @@ import { serviceCards, servicesHeading } from '@/constants/site';
         </p>
       </div>
 
-      <div class="mt-[105px] grid items-start gap-[70px] lg:grid-cols-3">
+      <div class="mt-[105px] grid items-stretch gap-[70px] lg:grid-cols-3">
         <article
           v-for="card in serviceCards"
           :key="card.stage"
-          class="group relative min-h-[496px] overflow-hidden rounded-auroraCard bg-white p-[20px_19px_74px] text-center shadow-auroraGlow"
+          class="service-card relative h-[570px] overflow-hidden rounded-auroraCard bg-white p-[20px_19px_74px] text-center shadow-auroraGlow sm:h-[530px] 2xl:h-[496px]"
         >
-          <div class="min-h-[402px] rounded-auroraInner bg-aurora-mint-soft px-7 py-[18px]">
-            <p class="font-display text-[30px] font-bold leading-normal text-aurora-mint">
-              {{ card.stage }}
-            </p>
-            <img
-              :src="card.icon.src"
-              :alt="card.icon.alt"
-              :width="card.icon.width"
-              :height="card.icon.height"
-              loading="lazy"
-              class="mx-auto mt-[37px] size-[90px]"
-            />
-            <h3
-              class="mx-auto mt-[37px] max-w-[418px] whitespace-pre-line font-display text-[clamp(31px,2.08vw,40px)] font-bold leading-normal text-aurora-mint"
-            >
-              {{ card.title }}
-            </h3>
-            <p
-              class="mx-auto mt-5 max-w-[389px] font-body text-[20px] leading-[35px] text-aurora-mint-dark opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-            >
-              {{ card.description }}
-            </p>
+          <div
+            class="service-card__panel relative h-[476px] overflow-hidden rounded-auroraInner bg-aurora-mint-soft px-7 py-[18px] sm:h-[436px] 2xl:h-[402px]"
+          >
+            <div class="service-card__summary absolute inset-[18px_28px] flex flex-col items-center" aria-hidden="true">
+              <p class="font-display text-[30px] font-bold leading-normal text-aurora-mint">
+                {{ card.stage }}
+              </p>
+              <img
+                :src="card.icon.src"
+                :alt="card.icon.alt"
+                :width="card.icon.width"
+                :height="card.icon.height"
+                loading="lazy"
+                class="mt-[37px] size-[90px] shrink-0"
+              />
+              <p
+                class="mt-[37px] max-w-[418px] whitespace-pre-line font-display text-[28px] font-bold leading-[1.35] text-aurora-mint sm:text-[clamp(31px,2.08vw,40px)] sm:leading-normal"
+              >
+                {{ card.title }}
+              </p>
+            </div>
+
+            <div class="service-card__details absolute inset-[18px_28px] flex flex-col items-center">
+              <h3
+                class="max-w-[418px] whitespace-pre-line font-display text-[28px] font-bold leading-[1.35] text-aurora-mint sm:text-[clamp(31px,2.08vw,40px)] sm:leading-normal"
+              >
+                {{ card.title }}
+              </h3>
+              <p
+                class="mt-5 max-w-[389px] font-body text-[18px] leading-[30px] text-aurora-mint-dark sm:text-[20px] sm:leading-[35px]"
+              >
+                {{ card.description }}
+              </p>
+            </div>
           </div>
 
           <a
             href="#contact"
-            class="absolute bottom-[19px] left-1/2 inline-flex -translate-x-1/2 items-center gap-3 font-display text-[20px] font-bold leading-[35px] text-[#8fd2b7]"
+            class="service-card__cta absolute bottom-[19px] left-1/2 inline-flex -translate-x-1/2 items-center gap-3 whitespace-nowrap font-display text-[20px] font-bold leading-[35px] text-[#8fd2b7]"
           >
             {{ card.ctaLabel }}
-            <span aria-hidden="true" class="-mt-1 text-[28px] leading-none">&nearr;</span>
+            <span aria-hidden="true" class="service-card__arrow -mt-1 text-[28px] leading-none">&nearr;</span>
           </a>
         </article>
       </div>
     </div>
   </section>
 </template>
+
+<style scoped>
+.service-card {
+  transition:
+    transform 500ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 500ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.service-card__panel {
+  transition: transform 500ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.service-card__summary,
+.service-card__details {
+  transition:
+    opacity 240ms ease,
+    transform 520ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.service-card__details {
+  opacity: 0;
+  transform: translateY(32px);
+  transition-delay: 0ms;
+}
+
+.service-card__summary {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  transition-delay: 110ms;
+}
+
+.service-card__cta,
+.service-card__arrow {
+  transition: transform 380ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .service-card:hover,
+  .service-card:focus-within {
+    transform: translateY(-7px);
+    box-shadow: 0 24px 48px rgb(38 135 103 / 22%);
+  }
+
+  .service-card:hover .service-card__panel,
+  .service-card:focus-within .service-card__panel {
+    transform: scale(1.008);
+  }
+
+  .service-card:hover .service-card__summary,
+  .service-card:focus-within .service-card__summary {
+    opacity: 0;
+    transform: translateY(-24px) scale(0.98);
+    transition-delay: 0ms;
+  }
+
+  .service-card:hover .service-card__details,
+  .service-card:focus-within .service-card__details {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 130ms;
+  }
+
+  .service-card:hover .service-card__cta,
+  .service-card:focus-within .service-card__cta {
+    transform: translateX(-50%) translateY(-2px);
+  }
+
+  .service-card:hover .service-card__arrow,
+  .service-card:focus-within .service-card__arrow {
+    transform: translate(4px, -4px);
+  }
+}
+
+@media (hover: none), (pointer: coarse) {
+  .service-card__summary {
+    opacity: 0;
+    transform: translateY(-16px);
+  }
+
+  .service-card__details {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .service-card,
+  .service-card__panel,
+  .service-card__summary,
+  .service-card__details,
+  .service-card__cta,
+  .service-card__arrow {
+    transition-duration: 1ms;
+    transition-delay: 0ms;
+  }
+}
+</style>
