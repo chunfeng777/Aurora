@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import { useLocale } from '@/composables/useLocale';
 import { useSiteContent } from '@/composables/useSiteContent';
 
+const { locale } = useLocale();
 const { serviceCards, servicesHeading } = useSiteContent();
 </script>
 
@@ -18,15 +20,19 @@ const { serviceCards, servicesHeading } = useSiteContent();
 
       <div class="mt-[105px] grid items-stretch gap-[70px] lg:grid-cols-3">
         <article
-          v-for="card in serviceCards"
+          v-for="(card, index) in serviceCards"
           :key="card.stage"
           class="service-card relative h-[570px] overflow-hidden rounded-auroraCard bg-white p-[20px_19px_74px] text-center shadow-auroraGlow sm:h-[530px] 2xl:h-[496px]"
+          :class="{
+            'service-card--coordination': index === 1,
+            'service-card--chinese-details': locale === 'zh',
+          }"
         >
           <div
             class="service-card__panel relative h-[476px] overflow-hidden rounded-auroraInner bg-aurora-mint-soft px-7 py-[18px] sm:h-[436px] 2xl:h-[402px]"
           >
             <div class="service-card__summary absolute inset-[18px_28px] flex flex-col items-center" aria-hidden="true">
-              <p class="font-display text-[30px] font-bold leading-normal text-aurora-mint">
+              <p class="font-display text-[20px] font-bold leading-[1.2] text-aurora-mint sm:text-[clamp(20px,1.35vw,26px)]">
                 {{ card.stage }}
               </p>
               <img
@@ -35,23 +41,23 @@ const { serviceCards, servicesHeading } = useSiteContent();
                 :width="card.icon.width"
                 :height="card.icon.height"
                 loading="lazy"
-                class="mt-[37px] size-[90px] shrink-0"
+                class="mt-[31px] size-[62px] shrink-0 sm:size-[clamp(68px,4.17vw,80px)]"
               />
               <p
-                class="mt-[37px] max-w-[418px] whitespace-pre-line font-display text-[28px] font-bold leading-[1.35] text-aurora-mint sm:text-[clamp(31px,2.08vw,40px)] sm:leading-normal"
+                class="mt-[34px] max-w-[418px] whitespace-pre-line font-display text-[26px] font-bold leading-[1.2] text-aurora-mint sm:text-[clamp(26px,1.77vw,34px)]"
               >
                 {{ card.title }}
               </p>
             </div>
 
-            <div class="service-card__details absolute inset-[18px_28px] flex flex-col items-center">
+            <div class="service-card__details absolute inset-y-5 left-7 right-7 flex flex-col items-center">
               <h3
                 class="max-w-[418px] whitespace-pre-line font-display text-[28px] font-bold leading-[1.35] text-aurora-mint sm:text-[clamp(31px,2.08vw,40px)] sm:leading-normal"
               >
                 {{ card.title }}
               </h3>
               <p
-                class="mt-5 max-w-[389px] font-body text-[18px] leading-[30px] text-aurora-mint-dark sm:text-[20px] sm:leading-[35px]"
+                class="w-full max-w-[389px] text-left font-body text-[18px] leading-[30px] text-aurora-mint-dark sm:text-[20px] sm:leading-[35px]"
               >
                 {{ card.description }}
               </p>
@@ -90,9 +96,32 @@ const { serviceCards, servicesHeading } = useSiteContent();
 }
 
 .service-card__details {
+  gap: clamp(24px, 1.46vw, 28px);
   opacity: 0;
   transform: translateY(32px);
   transition-delay: 0ms;
+}
+
+.service-card__details h3 {
+  font-size: clamp(26px, 1.77vw, 34px);
+  line-height: 1.2;
+}
+
+.service-card__details p {
+  font-size: clamp(15px, 1.04vw, 20px);
+  line-height: clamp(24px, 1.56vw, 30px);
+}
+
+.service-card--coordination .service-card__details p {
+  font-size: clamp(14px, 0.98vw, 19px);
+}
+
+.service-card--chinese-details .service-card__details {
+  justify-content: center;
+}
+
+.service-card--chinese-details .service-card__details p {
+  text-align: center;
 }
 
 .service-card__summary {

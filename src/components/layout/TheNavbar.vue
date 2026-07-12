@@ -169,7 +169,7 @@ onBeforeUnmount(() => {
       <button
         type="button"
         class="min-w-[67px] px-2 font-body leading-none transition-[color,font-size] duration-300"
-        :class="locale === 'zh' ? 'text-[34px] text-aurora-mint' : 'text-[20px] text-aurora-mint-muted'"
+        :class="locale === 'zh' ? 'text-[30px] text-aurora-mint' : 'text-[20px] text-aurora-mint-muted'"
         :aria-pressed="locale === 'zh'"
         aria-label="切换为中文"
         @click="setLocale('zh')"
