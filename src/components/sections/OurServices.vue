@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { serviceCards, servicesHeading } from '@/constants/site';
+import { useSiteContent } from '@/composables/useSiteContent';
+
+const { serviceCards, servicesHeading } = useSiteContent();
 </script>
 
 <template>

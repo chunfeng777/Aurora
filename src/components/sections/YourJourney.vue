@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { journeyHeading, journeySteps } from '@/constants/site';
+import { useSiteContent } from '@/composables/useSiteContent';
+
+const { journeyClosing, journeyCtaLabel, journeyHeading, journeySteps } = useSiteContent();
 </script>
 
 <template>
@@ -37,13 +39,13 @@ import { journeyHeading, journeySteps } from '@/constants/site';
 
       <div class="mt-[137px] text-center">
         <p class="font-display text-[clamp(32px,2.34vw,45px)] font-black leading-[1.22]">
-          Every step is guided with transparency and care.
+          {{ journeyClosing }}
         </p>
         <a
           href="#contact"
           class="mt-[53px] inline-flex min-h-[90px] w-[min(817px,100%)] items-center justify-center rounded-aurora-pill bg-white px-8 font-display text-[clamp(32px,2.19vw,42px)] font-bold leading-[59px] text-aurora-mint shadow-sm transition-transform duration-200 hover:-translate-y-1"
         >
-          Begin Your Journey
+          {{ journeyCtaLabel }}
         </a>
       </div>
     </div>

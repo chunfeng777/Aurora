@@ -5,6 +5,13 @@ export interface ImageAsset {
   readonly height: number;
 }
 
+export interface VideoAsset {
+  readonly src: string;
+  readonly poster: string;
+  readonly width: number;
+  readonly height: number;
+}
+
 export interface SectionHeading {
   readonly eyebrow?: string;
   readonly title: string;
@@ -46,7 +53,7 @@ export interface HeroContent {
   readonly subtitle: string;
   readonly ctaLabel: string;
   readonly ctaHref: string;
-  readonly background: ImageAsset;
+  readonly background: VideoAsset;
   readonly scrollLabel: string;
 }
 

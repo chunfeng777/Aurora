@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { contactContent } from '@/constants/site';
+import { useSiteContent } from '@/composables/useSiteContent';
+
+const { contactContent } = useSiteContent();
 
 const fieldClass =
   'mt-[18px] h-[83px] w-full rounded-[13px] border border-aurora-border bg-white px-8 text-[22px] leading-[35px] text-aurora-gray outline-none transition focus:border-aurora-mint focus:ring-4 focus:ring-aurora-mint/20';

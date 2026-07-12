@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { aboutContent } from '@/constants/site';
+import { useSiteContent } from '@/composables/useSiteContent';
+
+const { aboutContent } = useSiteContent();
 </script>
 
 <template>

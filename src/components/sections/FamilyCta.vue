@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { familyCtaContent } from '@/constants/site';
+import { useSiteContent } from '@/composables/useSiteContent';
+
+const { familyCtaContent } = useSiteContent();
 </script>
 
 <template>

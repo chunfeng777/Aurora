@@ -1,20 +1,30 @@
 <script setup lang="ts">
-import { heroContent, socialLinks } from '@/constants/site';
+import { useSiteContent } from '@/composables/useSiteContent';
+import { socialLinks } from '@/constants/site';
+
+const { heroContent } = useSiteContent();
 </script>
 
 <template>
   <section
     id="home"
-    class="relative isolate h-[100svh] min-h-[760px] overflow-hidden bg-aurora-mint lg:h-[1080px]"
+    class="relative isolate h-[100svh] min-h-[760px] overflow-hidden bg-aurora-mint"
     aria-labelledby="hero-title"
   >
-    <img
+    <video
       :src="heroContent.background.src"
-      :alt="heroContent.background.alt"
+      :poster="heroContent.background.poster"
       :width="heroContent.background.width"
       :height="heroContent.background.height"
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="auto"
       fetchpriority="high"
-      decoding="async"
+      disablepictureinpicture
+      controlslist="nodownload nofullscreen noremoteplayback"
+      aria-hidden="true"
       class="absolute inset-0 -z-20 h-full w-full object-cover"
     />
 
@@ -24,10 +34,10 @@ import { heroContent, socialLinks } from '@/constants/site';
     />
 
     <div
-      class="aurora-container relative flex h-full flex-col justify-center pb-[88px] pt-[244px] text-white lg:justify-start lg:pt-[395px]"
+      class="aurora-container relative flex h-full flex-col justify-center pb-[96px] pt-[220px] text-white lg:justify-start lg:pt-[clamp(320px,34vh,360px)]"
     >
       <p
-        class="max-w-[680px] whitespace-pre-line font-display text-[clamp(28px,2.1vw,40px)] font-black leading-[1.22]"
+        class="max-w-[900px] whitespace-pre-line font-display text-[clamp(28px,2.1vw,40px)] font-black leading-[1.22] sm:whitespace-pre"
       >
         {{ heroContent.eyebrow }}
       </p>
@@ -45,9 +55,10 @@ import { heroContent, socialLinks } from '@/constants/site';
 
       <a
         :href="heroContent.ctaHref"
-        class="mt-[54px] inline-flex h-[75px] w-[min(521px,100%)] items-center justify-center rounded-aurora-pill bg-aurora-mint px-8 text-center font-display text-[clamp(24px,1.7vw,33px)] font-black leading-none text-white shadow-auroraCard transition-transform duration-200 hover:-translate-y-1 focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-white/80"
+        class="relative mt-[54px] inline-flex h-[75px] w-[min(521px,100%)] items-center justify-center rounded-[38px] bg-aurora-mint px-14 text-center font-display text-[clamp(24px,1.7vw,33px)] font-black leading-none text-white shadow-auroraCard transition-transform duration-200 hover:-translate-y-1 focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-white/80"
       >
-        {{ heroContent.ctaLabel }}
+        <span>{{ heroContent.ctaLabel }}</span>
+        <span aria-hidden="true" class="absolute right-[34px] text-[38px] font-normal leading-none">&rsaquo;</span>
       </a>
     </div>
 
@@ -75,9 +86,10 @@ import { heroContent, socialLinks } from '@/constants/site';
 
     <a
       href="#why-choose-us"
-      class="absolute bottom-[19px] left-1/2 -translate-x-1/2 font-body text-[15px] leading-[18px] text-white/90 transition-colors hover:text-white"
+      class="absolute bottom-[10px] left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-1 font-body text-[15px] leading-[18px] text-white/90 transition-colors hover:text-white"
     >
-      {{ heroContent.scrollLabel }}
+      <span aria-hidden="true" class="size-[13px] rotate-45 border-b-2 border-r-2 border-current" />
+      <span>{{ heroContent.scrollLabel }}</span>
     </a>
   </section>
 </template>

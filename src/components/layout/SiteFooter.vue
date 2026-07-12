@@ -1,5 +1,8 @@
 <script setup lang="ts">
-import { footerContent, socialLinks } from '@/constants/site';
+import { useSiteContent } from '@/composables/useSiteContent';
+import { socialLinks } from '@/constants/site';
+
+const { footerContent } = useSiteContent();
 </script>
 
 <template>

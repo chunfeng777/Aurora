@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { whyChooseUsCards, whyChooseUsHeading } from '@/constants/site';
+import { useSiteContent } from '@/composables/useSiteContent';
+
+const { whyChooseUsCards, whyChooseUsHeading } = useSiteContent();
 </script>
 
 <template>

@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { processHeading, processSteps } from '@/constants/site';
+import { useSiteContent } from '@/composables/useSiteContent';
+
+const { processCtaLabel, processHeading, processSteps } = useSiteContent();
 </script>
 
 <template>
@@ -59,7 +61,7 @@ import { processHeading, processSteps } from '@/constants/site';
           href="#contact"
           class="inline-flex min-h-[90px] w-[min(817px,100%)] items-center justify-center rounded-aurora-pill bg-aurora-gold px-8 font-display text-[clamp(30px,2.08vw,40px)] font-bold leading-[59px] text-white shadow-sm transition-transform duration-200 hover:-translate-y-1"
         >
-          Learn More About Our Process
+          {{ processCtaLabel }}
         </a>
       </div>
     </div>

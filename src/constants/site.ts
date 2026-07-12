@@ -1,4 +1,3 @@
-import heroFamilyBeachUrl from '@/assets/images/hero-family-beach.jpg';
 import aboutConsultationUrl from '@/assets/images/about-consultation.jpg';
 import auroraLogoUrl from '@/assets/images/aurora-logo.svg';
 import contactMailIconUrl from '@/assets/images/contact-mail.svg';
@@ -14,6 +13,8 @@ import youtubeIconUrl from '@/assets/images/social-youtube.svg';
 import whyCoordinationIconUrl from '@/assets/images/why-coordination.svg';
 import whyDiscreetIconUrl from '@/assets/images/why-discreet.svg';
 import whyNetworkIconUrl from '@/assets/images/why-network.svg';
+import heroVideoPosterUrl from '@/assets/images/hero-video-poster.webp';
+import heroFamilyBeachVideoUrl from '@/assets/videos/hero-family-beach.mp4';
 
 import type {
   AboutContent,
@@ -58,10 +59,10 @@ export const heroContent: HeroContent = {
   ctaHref: '#contact',
   scrollLabel: 'Scroll Down',
   background: {
-    src: heroFamilyBeachUrl,
-    alt: 'A family standing together on a bright beach',
-    width: 1920,
-    height: 1080,
+    src: heroFamilyBeachVideoUrl,
+    poster: heroVideoPosterUrl,
+    width: 1280,
+    height: 720,
   },
 };
 
