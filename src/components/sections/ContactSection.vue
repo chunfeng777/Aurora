@@ -1,7 +1,88 @@
 <script setup lang="ts">
+import { computed, reactive, ref } from 'vue';
+
+import { createConsultation } from '@/api/consultations';
+import { useLocale } from '@/composables/useLocale';
 import { useSiteContent } from '@/composables/useSiteContent';
 
+const { locale } = useLocale();
 const { contactContent } = useSiteContent();
+
+const formValues = reactive<Record<string, string>>({
+  'full-name': '',
+  email: '',
+  phone: '',
+  wechat: '',
+  situation: '',
+});
+const optionSelections = reactive<Record<number, string[]>>({
+  0: [],
+  1: [],
+  2: [],
+  3: [],
+});
+const submissionState = ref<'idle' | 'submitting' | 'success' | 'error'>('idle');
+const submissionMessage = ref('');
+const isChinese = computed(() => locale.value === 'zh');
+const isSubmitting = computed(() => submissionState.value === 'submitting');
+
+const resetForm = () => {
+  Object.keys(formValues).forEach((key) => {
+    formValues[key] = '';
+  });
+
+  Object.keys(optionSelections).forEach((key) => {
+    optionSelections[Number(key)] = [];
+  });
+};
+
+const submitConsultation = async () => {
+  submissionState.value = 'idle';
+  submissionMessage.value = '';
+
+  const fullName = formValues['full-name'].trim();
+  const email = formValues.email.trim();
+  const whatsapp = formValues.phone.trim();
+  const wechat = formValues.wechat.trim();
+
+  if (!fullName || (!email && !whatsapp && !wechat)) {
+    submissionState.value = 'error';
+    submissionMessage.value = isChinese.value
+      ? '请填写姓名，并至少留下一个联系方式。'
+      : 'Please provide your full name and at least one contact method.';
+    return;
+  }
+
+  submissionState.value = 'submitting';
+
+  try {
+    await createConsultation({
+      fullName,
+      email,
+      whatsapp,
+      wechat,
+      preferredContactMethod: optionSelections[0].join(', '),
+      explore: optionSelections[1].join(', '),
+      expectedContactTime: optionSelections[2].join(', '),
+      currentLocation: optionSelections[3].join(', '),
+      message: formValues.situation.trim(),
+    });
+
+    resetForm();
+    submissionState.value = 'success';
+    submissionMessage.value = isChinese.value
+      ? '感谢您的咨询，我们会尽快与您联系。'
+      : 'Thank you. We will be in touch shortly.';
+  } catch (error) {
+    submissionState.value = 'error';
+    submissionMessage.value =
+      error instanceof Error && error.message
+        ? error.message
+        : isChinese.value
+          ? '提交失败，请稍后再试。'
+          : 'Unable to submit your request. Please try again later.';
+  }
+};
 
 const fieldClass =
   'mt-[18px] h-[83px] w-full rounded-[13px] border border-aurora-border bg-white px-8 text-[22px] leading-[35px] text-aurora-gray outline-none transition focus:border-aurora-mint focus:ring-4 focus:ring-aurora-mint/20';
@@ -24,7 +105,8 @@ const fieldClass =
 
       <form
         class="mt-[100px] rounded-auroraCard bg-white px-[101px] pb-[118px] pt-[91px] text-aurora-mint shadow-auroraGlow max-lg:px-8"
-        @submit.prevent
+        :aria-busy="isSubmitting"
+        @submit.prevent="submitConsultation"
       >
         <p
           class="max-w-[1177px] font-body text-[clamp(26px,1.82vw,35px)] leading-[1.45] text-aurora-mint"
@@ -46,12 +128,14 @@ const fieldClass =
               :type="field.type"
               :placeholder="field.placeholder"
               :class="fieldClass"
+              v-model="formValues[field.id]"
+              :disabled="isSubmitting"
             />
           </label>
         </div>
 
         <div class="mt-[70px] grid gap-x-[60px] gap-y-[72px] lg:grid-cols-2">
-          <fieldset v-for="group in contactContent.optionGroups" :key="group.legend">
+          <fieldset v-for="(group, index) in contactContent.optionGroups" :key="group.legend">
             <legend class="font-display text-[30px] font-bold leading-[35px] text-aurora-mint">
               {{ group.legend }}
             </legend>
@@ -63,8 +147,10 @@ const fieldClass =
               >
                 <input
                   type="checkbox"
-                  :name="group.legend"
+                  :name="`contact-option-${index}`"
                   :value="option"
+                  v-model="optionSelections[index]"
+                  :disabled="isSubmitting"
                   class="size-[29px] shrink-0 appearance-none rounded-[5px] border-[3px] border-aurora-mint bg-white transition checked:bg-aurora-mint checked:shadow-[inset_0_0_0_5px_white] focus:outline-none focus:ring-4 focus:ring-aurora-mint/20"
                 />
                 <span>{{ option }}</span>
@@ -82,16 +168,34 @@ const fieldClass =
             :id="contactContent.messageField.id"
             :name="contactContent.messageField.id"
             rows="7"
+            v-model="formValues[contactContent.messageField.id]"
+            :disabled="isSubmitting"
             class="mt-[18px] min-h-[287px] w-full resize-none rounded-[13px] border border-aurora-border bg-white px-8 py-7 text-[22px] leading-[35px] text-aurora-gray outline-none transition focus:border-aurora-mint focus:ring-4 focus:ring-aurora-mint/20"
           />
         </label>
 
         <button
           type="submit"
-          class="mx-auto mt-[95px] flex min-h-[89px] w-[min(700px,100%)] items-center justify-center rounded-aurora-pill bg-aurora-mint px-10 text-center font-display text-[32px] font-bold leading-[35px] text-white transition-transform duration-200 hover:-translate-y-1"
+          class="mx-auto mt-[95px] flex min-h-[89px] w-[min(700px,100%)] items-center justify-center rounded-aurora-pill bg-aurora-mint px-10 text-center font-display text-[32px] font-bold leading-[35px] text-white transition-transform duration-200 hover:-translate-y-1 disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:translate-y-0"
+          :disabled="isSubmitting"
         >
-          {{ contactContent.submitLabel }}
+          {{
+            isSubmitting
+              ? isChinese
+                ? '提交中...'
+                : 'Submitting...'
+              : contactContent.submitLabel
+          }}
         </button>
+        <p
+          v-if="submissionState !== 'idle'"
+          class="mt-7 text-center font-body text-[22px] leading-[30px]"
+          :class="submissionState === 'success' ? 'text-aurora-mint-dark' : 'text-red-600'"
+          role="status"
+          aria-live="polite"
+        >
+          {{ submissionMessage }}
+        </p>
       </form>
 
       <article
