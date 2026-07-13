@@ -54,6 +54,7 @@ export interface HeroContent {
   readonly ctaLabel: string;
   readonly ctaHref: string;
   readonly background: VideoAsset;
+  readonly audioSrc: string;
   readonly scrollLabel: string;
 }
 

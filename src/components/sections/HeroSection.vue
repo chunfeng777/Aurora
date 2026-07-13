@@ -5,64 +5,38 @@ import { socialLinks } from '@/constants/site';
 
 const { heroContent } = useSiteContent();
 
-const heroSectionRef = ref<HTMLElement | null>(null);
 const heroVideoRef = ref<HTMLVideoElement | null>(null);
 const heroAudioRef = ref<HTMLAudioElement | null>(null);
 
-let isHeroVisible = true;
-let hasAudioPermission = false;
-let observer: IntersectionObserver | null = null;
-let syncTimer = 0;
-
-const syncHeroAudio = () => {
-  const video = heroVideoRef.value;
+const playHeroAudio = () => {
   const audio = heroAudioRef.value;
 
-  if (!video || !audio) {
+  if (!audio || document.hidden) {
     return;
   }
 
-  if (Math.abs(audio.currentTime - video.currentTime) > 0.25) {
-    audio.currentTime = video.currentTime;
-  }
+  void audio.play().catch(() => undefined);
 };
 
 const playHeroMedia = async () => {
   const video = heroVideoRef.value;
   const audio = heroAudioRef.value;
 
-  if (!video || !audio || !isHeroVisible || document.hidden) {
+  if (!video || !audio || document.hidden) {
     return;
   }
 
-  await video.play().catch(() => undefined);
-
-  if (!hasAudioPermission) {
-    return;
-  }
-
-  syncHeroAudio();
-  await audio.play().catch(() => undefined);
+  const videoPlayback = video.play().catch(() => undefined);
+  const audioPlayback = audio.play().catch(() => undefined);
+  await Promise.all([videoPlayback, audioPlayback]);
 };
 
 const pauseHeroAudio = () => {
   heroAudioRef.value?.pause();
 };
 
-const handleHeroVisibility = (entries: IntersectionObserverEntry[]) => {
-  const entry = entries[0];
-  isHeroVisible = entry.isIntersecting && entry.intersectionRatio >= 0.35;
-
-  if (isHeroVisible) {
-    void playHeroMedia();
-    return;
-  }
-
-  pauseHeroAudio();
-};
-
 const unlockHeroAudio = () => {
-  hasAudioPermission = true;
+  playHeroAudio();
   void playHeroMedia();
 };
 
@@ -76,38 +50,20 @@ const handlePageVisibility = () => {
 };
 
 onMounted(() => {
-  const section = heroSectionRef.value;
-
-  observer = new IntersectionObserver(handleHeroVisibility, {
-    threshold: [0, 0.35, 0.65],
-  });
-
-  if (section) {
-    observer.observe(section);
-  }
-
-  window.addEventListener('pointerdown', unlockHeroAudio, { once: true, passive: true });
-  window.addEventListener('keydown', unlockHeroAudio, { once: true });
+  window.addEventListener('pointerdown', unlockHeroAudio, { passive: true });
+  window.addEventListener('keydown', unlockHeroAudio);
   document.addEventListener('visibilitychange', handlePageVisibility);
-
-  syncTimer = window.setInterval(syncHeroAudio, 1000);
 });
 
 onBeforeUnmount(() => {
-  observer?.disconnect();
   window.removeEventListener('pointerdown', unlockHeroAudio);
   window.removeEventListener('keydown', unlockHeroAudio);
   document.removeEventListener('visibilitychange', handlePageVisibility);
-
-  if (syncTimer) {
-    window.clearInterval(syncTimer);
-  }
 });
 </script>
 
 <template>
   <section
-    ref="heroSectionRef"
     id="home"
     class="relative isolate h-[100svh] min-h-[760px] overflow-hidden bg-aurora-mint"
     aria-labelledby="hero-title"
@@ -126,15 +82,17 @@ onBeforeUnmount(() => {
       fetchpriority="high"
       disablepictureinpicture
       controlslist="nodownload nofullscreen noremoteplayback"
+      @play="playHeroAudio"
+      @pause="pauseHeroAudio"
       aria-hidden="true"
       class="absolute inset-0 -z-20 h-full w-full object-cover"
     />
 
     <audio
       ref="heroAudioRef"
-      :src="heroContent.background.src"
+      :src="heroContent.audioSrc"
       loop
-      preload="metadata"
+      preload="none"
       aria-hidden="true"
     />
 

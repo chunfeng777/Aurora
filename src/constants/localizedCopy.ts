@@ -195,7 +195,7 @@ export const zhCopy: SiteCopy = {
     submitLabel: '预约专属咨询',
     informationTitle: '联系我们',
     methodLabels: ['邮箱', 'WhatsApp'],
-    methodValues: ['info@auroraifa.com', '765-881-0394'],
+    methodValues: ['xiaohanli814921189@gmail.com', '+1 (212) 555-1234'],
     privacyNote: '我们尊重每一位客户的隐私，您提供的所有信息都将严格保密，并仅用于本次咨询。',
   },
   footer: {
@@ -206,6 +206,6 @@ export const zhCopy: SiteCopy = {
       ['生育咨询与试管', '资源与诊所匹配', '专属礼宾服务'],
       ['info@auroraifa.com', 'AuroraFamilyAdvisory', '765-881-0394'],
     ],
-    copyright: '© 2025 Aurora International Family Advisory. 保留所有权利。',
+    copyright: '© 2026 Aurora International Family Advisory Inc. All rights reserved.',
   },
 };

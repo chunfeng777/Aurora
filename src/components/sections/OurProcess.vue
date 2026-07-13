@@ -59,7 +59,7 @@ const { processCtaLabel, processHeading, processSteps } = useSiteContent();
       <div class="mt-[105px] text-center">
         <a
           href="#contact"
-          class="inline-flex min-h-[90px] w-[min(817px,100%)] items-center justify-center rounded-aurora-pill bg-aurora-gold px-8 font-display text-[clamp(30px,2.08vw,40px)] font-bold leading-[59px] text-white shadow-sm transition-transform duration-200 hover:-translate-y-1"
+          class="inline-flex h-[90px] w-[min(817px,100%)] items-center justify-center rounded-[45px] bg-[#83d4b3] px-8 font-display text-[40px] font-bold leading-[59px] text-white shadow-sm transition-all duration-200 hover:-translate-y-1 hover:bg-aurora-mint-dark focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-aurora-mint/40 max-sm:h-[64px] max-sm:rounded-[32px] max-sm:px-5 max-sm:text-[24px] max-sm:leading-[32px]"
         >
           {{ processCtaLabel }}
         </a>

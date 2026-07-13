@@ -14,6 +14,7 @@ import whyCoordinationIconUrl from '@/assets/images/why-coordination.svg';
 import whyDiscreetIconUrl from '@/assets/images/why-discreet.svg';
 import whyNetworkIconUrl from '@/assets/images/why-network.svg';
 import heroVideoPosterUrl from '@/assets/images/hero-video-poster.webp';
+import heroBackgroundAudioUrl from '@/assets/audio/hero-background.mp3';
 import heroFamilyBeachVideoUrl from '@/assets/videos/hero-family-beach.mp4';
 
 import type {
@@ -64,6 +65,7 @@ export const heroContent: HeroContent = {
     width: 1280,
     height: 720,
   },
+  audioSrc: heroBackgroundAudioUrl,
 };
 
 export const socialLinks: readonly SocialLink[] = [
@@ -311,16 +313,16 @@ export const contactContent: ContactContent = {
   methods: [
     {
       label: 'Email',
-      value: 'contact@aurorafamilyadvisory.com',
+      value: 'xiaohanli814921189@gmail.com',
       icon: { src: contactMailIconUrl, alt: '', width: 44, height: 40 },
     },
     {
       label: 'WhatsApp',
-      value: '+1 (555) 123-4567',
+      value: '+1 (212) 555-1234',
       icon: { src: contactWhatsappIconUrl, alt: '', width: 82, height: 82 },
     },
   ],
-  privacyNote: 'All inquiries are handled with strict discretion and confidentiality.',
+  privacyNote: 'Your information will be handled with complete discretion and confidentiality.',
 };
 
 export const footerContent: FooterContent = {

@@ -1,8 +1,18 @@
 <script setup lang="ts">
+import contactWhatsappIconUrl from '@/assets/images/contact-whatsapp.svg';
 import { useSiteContent } from '@/composables/useSiteContent';
 import { socialLinks } from '@/constants/site';
 
 const { footerContent } = useSiteContent();
+
+const footerSocialLinks = [
+  ...socialLinks,
+  {
+    label: 'WhatsApp',
+    href: '#',
+    icon: { src: contactWhatsappIconUrl, alt: '', width: 82, height: 82 },
+  },
+] as const;
 
 const contactIconPaths: Record<string, string> = {
   email:
@@ -30,7 +40,7 @@ const isContactColumn = (links: readonly { readonly label: string; readonly href
 </script>
 
 <template>
-  <footer id="footer" class="bg-white pb-[66px] pt-[41px] text-aurora-mint">
+  <footer id="footer" class="bg-white pb-[52px] pt-[41px] text-aurora-mint">
     <div
       class="aurora-container grid gap-[80px] border-t border-white/0 pt-[24px] lg:grid-cols-[360px_1fr]"
     >
@@ -82,7 +92,7 @@ const isContactColumn = (links: readonly { readonly label: string; readonly href
     </div>
 
     <div
-      class="aurora-container mt-[91px] flex items-end justify-between gap-8 border-t border-aurora-mint/30 pt-[35px] max-md:flex-col max-md:items-start"
+      class="mx-auto mt-[91px] flex w-[81.5%] max-w-[1580px] items-center justify-between gap-8 border-t border-aurora-mint/60 pt-[43px] max-md:w-[calc(100%_-_2rem)] max-md:flex-col max-md:items-start max-md:pt-8"
     >
       <p class="font-body text-[20px] leading-[35px]">
         {{ footerContent.copyright }}
@@ -90,7 +100,7 @@ const isContactColumn = (links: readonly { readonly label: string; readonly href
 
       <div class="flex items-center gap-[19px]">
         <a
-          v-for="link in socialLinks"
+          v-for="link in footerSocialLinks"
           :key="link.label"
           :href="link.href"
           :aria-label="link.label"
@@ -103,9 +113,17 @@ const isContactColumn = (links: readonly { readonly label: string; readonly href
             :height="link.icon.height"
             loading="lazy"
             class="size-[37px]"
+            :class="link.label === 'WhatsApp' ? '' : 'footer-social-icon'"
           />
         </a>
       </div>
     </div>
   </footer>
 </template>
+
+<style scoped>
+.footer-social-icon {
+  filter: brightness(0) saturate(100%) invert(81%) sepia(20%) saturate(785%) hue-rotate(104deg)
+    brightness(94%) contrast(92%);
+}
+</style>

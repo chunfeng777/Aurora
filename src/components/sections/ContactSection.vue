@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { computed, reactive, ref } from 'vue';
 
-import { createConsultation } from '@/api/consultations';
+import {
+  ConsultationSubmissionError,
+  createConsultation,
+} from '@/api/consultations';
 import { useLocale } from '@/composables/useLocale';
 import { useSiteContent } from '@/composables/useSiteContent';
 
@@ -23,10 +26,40 @@ const singleOptionSelections = reactive<Record<number, string>>({
   1: '',
   2: '',
 });
+type SubmissionMessageKey =
+  | 'validationError'
+  | 'success'
+  | 'savedWithoutMail'
+  | 'networkError'
+  | 'serverError';
+
+const submissionMessages = {
+  en: {
+    validationError: 'Please provide your full name and at least one contact method.',
+    success: 'Submitted successfully! Thank you. We will be in touch shortly.',
+    savedWithoutMail:
+      'Submitted successfully! Your consultation record has been saved. The email notification could not be sent.',
+    networkError:
+      'Unable to connect to the consultation service. Please check your connection and try again.',
+    serverError: 'Unable to submit your request. Please try again later.',
+  },
+  zh: {
+    validationError: '请填写姓名，并至少留下一种联系方式。',
+    success: '提交成功！感谢您的咨询，我们会尽快与您联系。',
+    savedWithoutMail: '提交成功！您的咨询记录已保存，邮件通知暂时未能发送。',
+    networkError: '无法连接到咨询服务，请检查网络后重试。',
+    serverError: '提交失败，请稍后重试。',
+  },
+} as const;
+
 const submissionState = ref<'idle' | 'submitting' | 'success' | 'error'>('idle');
-const submissionMessage = ref('');
+const submissionMessageKey = ref<SubmissionMessageKey | null>(null);
 const isChinese = computed(() => locale.value === 'zh');
 const isSubmitting = computed(() => submissionState.value === 'submitting');
+const submissionMessage = computed(() => {
+  const key = submissionMessageKey.value;
+  return key ? submissionMessages[locale.value][key] : '';
+});
 const fieldsById = computed(() =>
   Object.fromEntries(contactContent.value.fields.map((field) => [field.id, field])),
 );
@@ -67,7 +100,7 @@ const resetForm = () => {
 
 const submitConsultation = async () => {
   submissionState.value = 'idle';
-  submissionMessage.value = '';
+  submissionMessageKey.value = null;
 
   const fullName = formValues['full-name'].trim();
   const email = formValues.email.trim();
@@ -76,9 +109,7 @@ const submitConsultation = async () => {
 
   if (!fullName || (!email && !whatsapp && !wechat)) {
     submissionState.value = 'error';
-    submissionMessage.value = isChinese.value
-      ? '请填写姓名，并至少留下一个联系方式。'
-      : 'Please provide your full name and at least one contact method.';
+    submissionMessageKey.value = 'validationError';
     return;
   }
 
@@ -99,17 +130,25 @@ const submitConsultation = async () => {
 
     resetForm();
     submissionState.value = 'success';
-    submissionMessage.value = isChinese.value
-      ? '感谢您的咨询，我们会尽快与您联系。'
-      : 'Thank you. We will be in touch shortly.';
+    submissionMessageKey.value = 'success';
   } catch (error) {
     submissionState.value = 'error';
-    submissionMessage.value =
-      error instanceof Error && error.message
-        ? error.message
-        : isChinese.value
-          ? '提交失败，请稍后再试。'
-          : 'Unable to submit your request. Please try again later.';
+
+    if (error instanceof ConsultationSubmissionError) {
+      if (error.code === 'mail_notification_failed_after_save') {
+        resetForm();
+        submissionState.value = 'success';
+        submissionMessageKey.value = 'savedWithoutMail';
+        return;
+      }
+
+      if (error.code === 'network_error') {
+        submissionMessageKey.value = 'networkError';
+        return;
+      }
+    }
+
+    submissionMessageKey.value = 'serverError';
   }
 };
 
@@ -122,7 +161,7 @@ const optionLabelClass =
 </script>
 
 <template>
-  <section id="contact" class="bg-aurora-mint pb-[111px] pt-[114px]">
+  <section id="contact" class="bg-aurora-mint pb-[190px] pt-[114px]">
     <div class="aurora-container text-white">
       <div class="text-center">
         <h2 class="font-display text-[clamp(54px,4.69vw,90px)] font-black leading-[1.16]">
@@ -296,14 +335,75 @@ const optionLabelClass =
         </button>
         <p
           v-if="submissionState !== 'idle'"
-          class="mt-7 text-center font-body text-[26px] leading-[36px] max-sm:text-[18px] max-sm:leading-[28px]"
-          :class="submissionState === 'success' ? 'text-aurora-mint-dark' : 'text-red-600'"
+          class="mt-8 flex w-full items-center justify-center gap-4 rounded-[18px] border-[3px] px-7 py-6 text-center font-display text-[28px] font-bold leading-[38px] shadow-sm max-sm:gap-3 max-sm:px-4 max-sm:py-4 max-sm:text-[19px] max-sm:leading-[28px]"
+          :class="
+            submissionState === 'success'
+              ? 'border-[#20ad6b] bg-[#e8fff2] text-[#087443]'
+              : 'border-red-300 bg-red-50 text-red-700'
+          "
           role="status"
           aria-live="polite"
         >
-          {{ submissionMessage }}
+          <span
+            v-if="submissionState === 'success'"
+            class="flex size-[42px] shrink-0 items-center justify-center rounded-full bg-[#12965b] text-[28px] leading-none text-white max-sm:size-[32px] max-sm:text-[21px]"
+            aria-hidden="true"
+          >
+            ✓
+          </span>
+          <span>{{ submissionMessage }}</span>
         </p>
       </form>
+
+      <aside
+        class="relative mx-auto mt-[101px] min-h-[296px] max-w-[1580px] rounded-[47px] bg-white px-[35px] pb-[48px] pt-[49px] text-aurora-mint shadow-[0_24px_28px_-18px_rgba(73,152,120,0.72)] max-lg:px-8 max-sm:min-h-0 max-sm:rounded-[28px] max-sm:px-6 max-sm:py-8"
+        aria-labelledby="contact-information-title"
+      >
+        <h3
+          id="contact-information-title"
+          class="font-display text-[36px] font-black leading-normal max-sm:text-[26px]"
+        >
+          {{ contactContent.informationTitle }}
+        </h3>
+
+        <div
+          class="mt-[46px] grid grid-cols-2 gap-x-12 gap-y-8 max-lg:grid-cols-1 min-[1700px]:grid-cols-[668px_668px] min-[1700px]:gap-x-[103px]"
+        >
+          <article
+            v-for="method in contactContent.methods"
+            :key="method.label"
+            class="flex min-w-0 items-center gap-6"
+          >
+            <span
+              class="grid size-[82px] shrink-0 place-items-center overflow-hidden rounded-full bg-aurora-mint"
+              aria-hidden="true"
+            >
+              <img
+                :src="method.icon.src"
+                alt=""
+                :width="method.icon.width"
+                :height="method.icon.height"
+                class="max-h-full max-w-full object-contain"
+              />
+            </span>
+
+            <div class="min-w-0">
+              <h4 class="font-display text-[28px] font-bold leading-normal text-aurora-mint max-sm:text-[21px]">
+                {{ method.label }}
+              </h4>
+              <p class="break-words font-body text-[25px] leading-[40px] text-aurora-gray max-sm:text-[18px] max-sm:leading-[28px]">
+                {{ method.value }}
+              </p>
+            </div>
+          </article>
+        </div>
+      </aside>
+
+      <p
+        class="mx-auto mt-[76px] max-w-[1580px] text-center font-body text-[35px] leading-[55px] text-white max-sm:mt-12 max-sm:text-[22px] max-sm:leading-[34px]"
+      >
+        {{ contactContent.privacyNote }}
+      </p>
     </div>
   </section>
 </template>
