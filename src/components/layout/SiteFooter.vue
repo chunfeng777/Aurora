@@ -40,11 +40,12 @@ const isContactColumn = (links: readonly { readonly label: string; readonly href
 </script>
 
 <template>
-  <footer id="footer" class="bg-white pb-[52px] pt-[41px] text-aurora-mint">
-    <div
-      class="aurora-container grid gap-[80px] border-t border-white/0 pt-[24px] lg:grid-cols-[360px_1fr]"
-    >
-      <div>
+  <footer
+    id="footer"
+    class="bg-white pb-[100px] pt-[156px] text-aurora-mint max-lg:pb-16 max-lg:pt-20"
+  >
+    <div class="aurora-container">
+      <div class="pl-[31px] max-lg:pl-0">
         <a href="#home" class="inline-block" aria-label="Aurora home">
           <img
             :src="footerContent.logo.src"
@@ -55,67 +56,74 @@ const isContactColumn = (links: readonly { readonly label: string; readonly href
             class="h-auto w-[299px]"
           />
         </a>
-        <p class="mt-[29px] whitespace-pre-line font-body text-[25px] leading-[35px]">
+        <p
+          class="mt-[29px] whitespace-pre-line font-body text-[25px] leading-[35px] max-sm:text-[20px] max-sm:leading-[30px]"
+        >
           {{ footerContent.tagline }}
         </p>
-      </div>
 
-      <div class="grid gap-[70px] md:grid-cols-3">
-        <nav v-for="column in footerContent.columns" :key="column.title" :aria-label="column.title">
-          <h2 class="font-display text-[40px] font-bold leading-[49px]">
-            {{ column.title }}
-          </h2>
-          <ul
-            class="mt-[24px]"
-            :class="isContactColumn(column.links) ? 'space-y-[22px]' : 'space-y-[16px]'"
-          >
-            <li v-for="link in column.links" :key="link.label">
-              <a
-                :href="link.href"
-                class="font-body text-[25px] font-bold leading-[35px] transition-opacity duration-200 hover:opacity-75"
-                :class="isContactColumn(column.links) ? 'flex items-center gap-[18px]' : ''"
-              >
-                <svg
-                  v-if="isContactColumn(column.links)"
-                  class="size-[28px] shrink-0 fill-current"
-                  viewBox="0 0 24 24"
-                  aria-hidden="true"
-                >
-                  <path :d="contactIconPaths[getContactIconKey(link.label)]" />
-                </svg>
-                {{ link.label }}
-              </a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </div>
-
-    <div
-      class="mx-auto mt-[91px] flex w-[81.5%] max-w-[1580px] items-center justify-between gap-8 border-t border-aurora-mint/60 pt-[43px] max-md:w-[calc(100%_-_2rem)] max-md:flex-col max-md:items-start max-md:pt-8"
-    >
-      <p class="font-body text-[20px] leading-[35px]">
-        {{ footerContent.copyright }}
-      </p>
-
-      <div class="flex items-center gap-[19px]">
-        <a
-          v-for="link in footerSocialLinks"
-          :key="link.label"
-          :href="link.href"
-          :aria-label="link.label"
-          class="grid size-[37px] place-items-center transition-transform duration-200 hover:-translate-y-1"
+        <div
+          class="mt-[77px] grid grid-cols-[22.6%_31.1%_33.4%] gap-x-[6.45%] max-lg:grid-cols-2 max-lg:gap-x-12 max-lg:gap-y-16 max-sm:grid-cols-1"
         >
-          <img
-            :src="link.icon.src"
-            :alt="link.icon.alt"
-            :width="link.icon.width"
-            :height="link.icon.height"
-            loading="lazy"
-            class="size-[37px]"
-            :class="link.label === 'WhatsApp' ? '' : 'footer-social-icon'"
-          />
-        </a>
+          <nav
+            v-for="column in footerContent.columns"
+            :key="column.title"
+            :aria-label="column.title"
+          >
+            <h2 class="font-display text-[40px] font-bold leading-[49px] max-sm:text-[32px]">
+              {{ column.title }}
+            </h2>
+            <ul class="mt-[41px] space-y-[28px]">
+              <li v-for="link in column.links" :key="link.label">
+                <a
+                  :href="link.href"
+                  class="font-body text-[25px] font-bold leading-[35px] transition-opacity duration-200 hover:opacity-75 max-sm:text-[20px] max-sm:leading-[30px]"
+                  :class="isContactColumn(column.links) ? 'flex items-center gap-[18px]' : ''"
+                >
+                  <svg
+                    v-if="isContactColumn(column.links)"
+                    class="size-[28px] shrink-0 fill-current"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path :d="contactIconPaths[getContactIconKey(link.label)]" />
+                  </svg>
+                  <span class="min-w-0 break-words">{{ link.label }}</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+
+        <div
+          class="mt-[75px] flex items-center justify-between gap-8 border-t border-aurora-mint/60 pt-[86px] max-md:flex-col max-md:items-start max-md:pt-12"
+        >
+          <p
+            class="font-body text-[20px] font-bold leading-[35px] max-sm:text-[16px] max-sm:leading-[26px]"
+          >
+            {{ footerContent.copyright }}
+          </p>
+
+          <div class="flex items-center gap-[15px]">
+            <a
+              v-for="link in footerSocialLinks"
+              :key="link.label"
+              :href="link.href"
+              :aria-label="link.label"
+              class="grid size-[37px] place-items-center transition-transform duration-200 hover:-translate-y-1"
+            >
+              <img
+                :src="link.icon.src"
+                :alt="link.icon.alt"
+                :width="link.icon.width"
+                :height="link.icon.height"
+                loading="lazy"
+                class="size-[37px]"
+                :class="link.label === 'WhatsApp' ? '' : 'footer-social-icon'"
+              />
+            </a>
+          </div>
+        </div>
       </div>
     </div>
   </footer>

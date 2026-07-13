@@ -327,7 +327,7 @@ export const contactContent: ContactContent = {
 
 export const footerContent: FooterContent = {
   logo: auroraLogo,
-  tagline: 'Define Your Path to Parenthood\nPrivate - Secure - Effortless',
+  tagline: 'Define Your Path to Parenthood\nPrivate·Secure·Effortless',
   columns: [
     {
       title: 'Quick Links',
