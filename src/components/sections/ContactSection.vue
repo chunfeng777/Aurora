@@ -17,14 +17,39 @@ const formValues = reactive<Record<string, string>>({
 });
 const optionSelections = reactive<Record<number, string[]>>({
   0: [],
-  1: [],
-  2: [],
   3: [],
+});
+const singleOptionSelections = reactive<Record<number, string>>({
+  1: '',
+  2: '',
 });
 const submissionState = ref<'idle' | 'submitting' | 'success' | 'error'>('idle');
 const submissionMessage = ref('');
 const isChinese = computed(() => locale.value === 'zh');
 const isSubmitting = computed(() => submissionState.value === 'submitting');
+const fieldsById = computed(() =>
+  Object.fromEntries(contactContent.value.fields.map((field) => [field.id, field])),
+);
+const orderedContactFieldIds = ['email', 'phone', 'wechat'] as const;
+const primaryContactGridClass = computed(() =>
+  isChinese.value
+    ? 'grid-cols-2 lg:grid-cols-4'
+    : 'grid-cols-2 lg:grid-cols-[132px_142px_210px_168px]',
+);
+
+const getOptionGridClass = (index: number) => {
+  if (index === 0) {
+    return isChinese.value
+      ? 'grid-cols-1 md:grid-cols-2 xl:grid-cols-[360px_150px_minmax(400px,480px)]'
+      : 'grid-cols-1 md:grid-cols-2 xl:grid-cols-[249px_200px_495px]';
+  }
+
+  if (index === 1) {
+    return 'grid-cols-2 sm:grid-cols-4';
+  }
+
+  return 'grid-cols-1 sm:grid-cols-2 xl:grid-cols-3';
+};
 
 const resetForm = () => {
   Object.keys(formValues).forEach((key) => {
@@ -33,6 +58,10 @@ const resetForm = () => {
 
   Object.keys(optionSelections).forEach((key) => {
     optionSelections[Number(key)] = [];
+  });
+
+  Object.keys(singleOptionSelections).forEach((key) => {
+    singleOptionSelections[Number(key)] = '';
   });
 };
 
@@ -62,8 +91,8 @@ const submitConsultation = async () => {
       whatsapp,
       wechat,
       preferredContactMethod: optionSelections[0].join(', '),
-      explore: optionSelections[1].join(', '),
-      expectedContactTime: optionSelections[2].join(', '),
+      explore: singleOptionSelections[1],
+      expectedContactTime: singleOptionSelections[2],
       currentLocation: optionSelections[3].join(', '),
       message: formValues.situation.trim(),
     });
@@ -85,7 +114,11 @@ const submitConsultation = async () => {
 };
 
 const fieldClass =
-  'mt-[18px] h-[83px] w-full rounded-[13px] border border-aurora-border bg-white px-8 text-[22px] leading-[35px] text-aurora-gray outline-none transition focus:border-aurora-mint focus:ring-4 focus:ring-aurora-mint/20';
+  'mt-[14px] h-[58px] w-full rounded-[16px] border-[4px] border-[#ececec] bg-white px-5 font-body text-[26px] leading-[35px] text-aurora-gray outline-none transition placeholder:text-aurora-gray/45 focus:border-aurora-mint focus:ring-4 focus:ring-aurora-mint/20 max-sm:text-[18px]';
+const labelClass =
+  'block font-display text-[28px] font-bold leading-[1.25] text-aurora-mint max-sm:text-[20px]';
+const optionLabelClass =
+  'flex min-w-0 items-start gap-[9px] font-display text-[28px] font-bold leading-[1.25] text-aurora-mint max-sm:text-[18px]';
 </script>
 
 <template>
@@ -104,56 +137,130 @@ const fieldClass =
       </div>
 
       <form
-        class="mt-[100px] rounded-auroraCard bg-white px-[101px] pb-[118px] pt-[91px] text-aurora-mint shadow-auroraGlow max-lg:px-8"
+        class="mx-auto mt-[100px] max-w-[1580px] rounded-auroraCard bg-white px-[68px] pb-[40px] pt-[68px] text-aurora-mint shadow-auroraGlow max-lg:px-8"
         :aria-busy="isSubmitting"
         @submit.prevent="submitConsultation"
       >
         <p
-          class="max-w-[1177px] font-body text-[clamp(26px,1.82vw,35px)] leading-[1.45] text-aurora-mint"
+          class="relative max-w-[1453px] pl-[30px] font-body text-[32px] leading-[55px] text-aurora-mint before:absolute before:left-0 before:top-[21px] before:size-[10px] before:rounded-full before:bg-aurora-mint max-sm:pl-[20px] max-sm:text-[20px] max-sm:leading-[34px] max-sm:before:top-[12px] max-sm:before:size-[8px]"
         >
           {{ contactContent.intro }}
         </p>
 
-        <div class="mt-[87px] grid gap-x-[60px] gap-y-[52px] lg:grid-cols-2">
-          <label
-            v-for="field in contactContent.fields"
-            :key="field.id"
-            :for="field.id"
-            class="font-display text-[30px] font-bold leading-[35px] text-aurora-mint"
+        <label
+          v-if="fieldsById['full-name']"
+          :for="fieldsById['full-name'].id"
+          :class="`${labelClass} mt-[52px] max-w-[909px]`"
+        >
+          {{ fieldsById['full-name'].label }}
+          <input
+            :id="fieldsById['full-name'].id"
+            :name="fieldsById['full-name'].id"
+            :type="fieldsById['full-name'].type"
+            :placeholder="fieldsById['full-name'].placeholder"
+            :class="fieldClass"
+            v-model="formValues[fieldsById['full-name'].id]"
+            :disabled="isSubmitting"
+          />
+        </label>
+
+        <fieldset class="mt-[52px]" v-if="contactContent.optionGroups[0]">
+          <legend :class="labelClass">
+            {{ contactContent.optionGroups[0].legend }}
+          </legend>
+          <div
+            class="mt-[24px] grid max-w-[1040px] gap-x-[78px] gap-y-[18px]"
+            :class="primaryContactGridClass"
           >
-            {{ field.label }}
+            <label
+              v-for="option in contactContent.optionGroups[0].options"
+              :key="option"
+              :class="optionLabelClass"
+            >
+              <input
+                type="checkbox"
+                name="contact-option-0"
+                :value="option"
+                v-model="optionSelections[0]"
+                :disabled="isSubmitting"
+                class="size-[36px] shrink-0 appearance-none rounded-[3px] border-[2px] border-[#b9e8d5] bg-white transition checked:bg-aurora-mint checked:shadow-[inset_0_0_0_6px_white] focus:outline-none focus:ring-4 focus:ring-aurora-mint/20 max-sm:size-[24px]"
+              />
+              <span
+                class="min-w-0 break-words"
+                :class="!isChinese ? 'sm:whitespace-nowrap' : ''"
+              >
+                {{ option }}
+              </span>
+            </label>
+          </div>
+        </fieldset>
+
+        <div class="mt-[39px] grid max-w-[910px] gap-y-[49px]">
+          <label
+            v-for="fieldId in orderedContactFieldIds"
+            :key="fieldId"
+            :for="fieldsById[fieldId]?.id"
+            :class="labelClass"
+          >
+            {{ fieldsById[fieldId]?.label }}
             <input
-              :id="field.id"
-              :name="field.id"
-              :type="field.type"
-              :placeholder="field.placeholder"
+              v-if="fieldsById[fieldId]"
+              :id="fieldsById[fieldId].id"
+              :name="fieldsById[fieldId].id"
+              :type="fieldsById[fieldId].type"
+              :placeholder="fieldsById[fieldId].placeholder"
               :class="fieldClass"
-              v-model="formValues[field.id]"
+              v-model="formValues[fieldsById[fieldId].id]"
               :disabled="isSubmitting"
             />
           </label>
         </div>
 
-        <div class="mt-[70px] grid gap-x-[60px] gap-y-[72px] lg:grid-cols-2">
-          <fieldset v-for="(group, index) in contactContent.optionGroups" :key="group.legend">
-            <legend class="font-display text-[30px] font-bold leading-[35px] text-aurora-mint">
+        <div class="my-[82px] h-[8px] w-full bg-aurora-mint-soft" aria-hidden="true" />
+
+        <div class="grid gap-y-[67px]">
+          <fieldset
+            v-for="(group, index) in contactContent.optionGroups.slice(1)"
+            :key="group.legend"
+          >
+            <legend :class="labelClass">
               {{ group.legend }}
             </legend>
-            <div class="mt-[32px] space-y-[25px]">
+            <div
+              class="mt-[24px] grid gap-x-[72px] gap-y-[18px]"
+              :class="getOptionGridClass(index)"
+            >
               <label
                 v-for="option in group.options"
                 :key="option"
-                class="flex items-center gap-[23px] font-body text-[25px] leading-[35px] text-aurora-mint"
+                :class="optionLabelClass"
               >
                 <input
-                  type="checkbox"
-                  :name="`contact-option-${index}`"
+                  v-if="index <= 1"
+                  type="radio"
+                  :name="`contact-option-${index + 1}`"
                   :value="option"
-                  v-model="optionSelections[index]"
+                  v-model="singleOptionSelections[index + 1]"
                   :disabled="isSubmitting"
-                  class="size-[29px] shrink-0 appearance-none rounded-[5px] border-[3px] border-aurora-mint bg-white transition checked:bg-aurora-mint checked:shadow-[inset_0_0_0_5px_white] focus:outline-none focus:ring-4 focus:ring-aurora-mint/20"
+                  class="shrink-0 appearance-none rounded-[3px] border-[2px] border-[#b9e8d5] bg-white transition checked:bg-aurora-mint checked:shadow-[inset_0_0_0_6px_white] focus:outline-none focus:ring-4 focus:ring-aurora-mint/20"
+                  :class="isChinese && index === 0 ? 'size-[30px] max-sm:size-[24px]' : 'size-[36px] max-sm:size-[24px]'"
                 />
-                <span>{{ option }}</span>
+                <input
+                  v-else
+                  type="checkbox"
+                  :name="`contact-option-${index + 1}`"
+                  :value="option"
+                  v-model="optionSelections[index + 1]"
+                  :disabled="isSubmitting"
+                  class="shrink-0 appearance-none rounded-[3px] border-[2px] border-[#b9e8d5] bg-white transition checked:bg-aurora-mint checked:shadow-[inset_0_0_0_6px_white] focus:outline-none focus:ring-4 focus:ring-aurora-mint/20"
+                  :class="isChinese && index === 0 ? 'size-[30px] max-sm:size-[24px]' : 'size-[36px] max-sm:size-[24px]'"
+                />
+                <span
+                  class="min-w-0 break-words"
+                  :class="!isChinese && index === 0 ? 'xl:whitespace-nowrap' : ''"
+                >
+                  {{ option }}
+                </span>
               </label>
             </div>
           </fieldset>
@@ -161,7 +268,7 @@ const fieldClass =
 
         <label
           :for="contactContent.messageField.id"
-          class="mt-[78px] block font-display text-[30px] font-bold leading-[35px] text-aurora-mint"
+          :class="`${labelClass} mt-[73px]`"
         >
           {{ contactContent.messageField.label }}
           <textarea
@@ -170,13 +277,13 @@ const fieldClass =
             rows="7"
             v-model="formValues[contactContent.messageField.id]"
             :disabled="isSubmitting"
-            class="mt-[18px] min-h-[287px] w-full resize-none rounded-[13px] border border-aurora-border bg-white px-8 py-7 text-[22px] leading-[35px] text-aurora-gray outline-none transition focus:border-aurora-mint focus:ring-4 focus:ring-aurora-mint/20"
+            class="mt-[14px] min-h-[333px] w-full resize-none rounded-[16px] border-[4px] border-[#ececec] bg-white px-8 py-7 font-body text-[26px] leading-[40px] text-aurora-gray outline-none transition focus:border-aurora-mint focus:ring-4 focus:ring-aurora-mint/20 max-sm:text-[18px] max-sm:leading-[30px]"
           />
         </label>
 
         <button
           type="submit"
-          class="mx-auto mt-[95px] flex min-h-[89px] w-[min(700px,100%)] items-center justify-center rounded-aurora-pill bg-aurora-mint px-10 text-center font-display text-[32px] font-bold leading-[35px] text-white transition-transform duration-200 hover:-translate-y-1 disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:translate-y-0"
+          class="mt-[52px] flex min-h-[100px] w-full items-center justify-center rounded-[50px] bg-aurora-gold px-10 text-center font-display text-[40px] font-bold leading-[49px] text-white transition-transform duration-200 hover:-translate-y-1 disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:translate-y-0 max-sm:min-h-[72px] max-sm:rounded-[36px] max-sm:text-[24px]"
           :disabled="isSubmitting"
         >
           {{
@@ -189,7 +296,7 @@ const fieldClass =
         </button>
         <p
           v-if="submissionState !== 'idle'"
-          class="mt-7 text-center font-body text-[22px] leading-[30px]"
+          class="mt-7 text-center font-body text-[26px] leading-[36px] max-sm:text-[18px] max-sm:leading-[28px]"
           :class="submissionState === 'success' ? 'text-aurora-mint-dark' : 'text-red-600'"
           role="status"
           aria-live="polite"
@@ -197,46 +304,6 @@ const fieldClass =
           {{ submissionMessage }}
         </p>
       </form>
-
-      <article
-        class="mt-[94px] rounded-auroraCard bg-white px-[91px] pb-[67px] pt-[67px] text-aurora-mint shadow-auroraGlow max-lg:px-8"
-      >
-        <h3 class="text-center font-display text-[50px] font-black leading-[1.16]">
-          {{ contactContent.informationTitle }}
-        </h3>
-
-        <div class="mt-[68px] grid gap-[40px] lg:grid-cols-2">
-          <a
-            v-for="method in contactContent.methods"
-            :key="method.label"
-            href="#"
-            class="flex min-h-[116px] items-center gap-[32px] rounded-[20px] bg-aurora-mint px-[36px] text-white transition-transform duration-200 hover:-translate-y-1"
-          >
-            <span class="grid size-[82px] shrink-0 place-items-center rounded-full bg-aurora-mint-dark">
-              <img
-                :src="method.icon.src"
-                :alt="method.icon.alt"
-                :width="method.icon.width"
-                :height="method.icon.height"
-                loading="lazy"
-                class="max-h-[54px] max-w-[54px]"
-              />
-            </span>
-            <span>
-              <span class="block font-display text-[30px] font-bold leading-[35px]">
-                {{ method.label }}
-              </span>
-              <span class="mt-2 block font-body text-[24px] leading-[35px]">
-                {{ method.value }}
-              </span>
-            </span>
-          </a>
-        </div>
-
-        <p class="mt-[59px] text-center font-body text-[25px] leading-[35px] text-aurora-gray">
-          {{ contactContent.privacyNote }}
-        </p>
-      </article>
     </div>
   </section>
 </template>

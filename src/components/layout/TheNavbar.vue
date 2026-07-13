@@ -133,7 +133,7 @@ onBeforeUnmount(() => {
         >
           <span>{{ item.label }}</span>
           <span
-            class="absolute -bottom-[3px] left-0 h-[4px] rounded-full bg-aurora-gold transition-all duration-300"
+            class="absolute -bottom-[8px] left-0 h-[4px] rounded-full bg-aurora-gold transition-all duration-300"
             :class="
               activeHref === item.href
                 ? 'w-full opacity-100'
@@ -151,14 +151,15 @@ onBeforeUnmount(() => {
       </a>
     </div>
 
-    <div
-      class="pointer-events-auto absolute right-[clamp(16px,7vw,136px)] top-[154px] z-10 flex h-[46px] w-[152px] items-center justify-center rounded-[23px] bg-white"
-      aria-label="Language selector"
-    >
+    <div class="pointer-events-none relative z-10 mx-auto w-[min(calc(100%_-_2rem),1680px)]">
+      <div
+        class="pointer-events-auto absolute right-0 top-[18px] flex h-[46px] w-[152px] items-center justify-center rounded-[23px] bg-white"
+        aria-label="Language selector"
+      >
       <button
         type="button"
         class="min-w-[62px] px-2 font-body uppercase leading-none transition-[color,font-size] duration-300"
-        :class="locale === 'en' ? 'text-[34px] text-aurora-mint' : 'text-[20px] text-aurora-mint-muted'"
+        :class="locale === 'en' ? 'text-[34px] text-aurora-mint' : 'text-[24px] text-aurora-mint-muted'"
         :aria-pressed="locale === 'en'"
         aria-label="Switch to English"
         @click="setLocale('en')"
@@ -176,6 +177,7 @@ onBeforeUnmount(() => {
       >
         &#20013;&#25991;
       </button>
+      </div>
     </div>
   </header>
 </template>

@@ -291,7 +291,14 @@ export const contactContent: ContactContent = {
     },
     {
       legend: 'Where are you currently based',
-      options: ['United States', 'Mainland China', 'Hongkong/Macao/Taiwan', 'Other'],
+      options: [
+        'United States',
+        'Mainland China',
+        'Hong Kong',
+        'Macao',
+        'Taiwan',
+        'Other Countries/Regions',
+      ],
     },
   ],
   messageField: {
@@ -341,11 +348,11 @@ export const footerContent: FooterContent = {
     {
       title: 'Contact Us',
       links: [
-        { label: 'contact@aurorafamilyadvisory.com', href: 'mailto:contact@aurorafamilyadvisory.com' },
+        { label: 'xiaohanli814921189@gmail.com', href: 'mailto:xiaohanli814921189@gmail.com' },
         { label: 'AuroraFamilyAdvisory', href: '#' },
-        { label: '+1 (555) 123-4567', href: 'tel:+15551234567' },
+        { label: '+1 (212) 555-1234', href: 'tel:+12125551234' },
       ],
     },
   ],
-  copyright: 'Copyright 2025 Aurora International Family Advisory. All rights reserved.',
+  copyright: '© 2026 Aurora International Family Advisory Inc. All rights reserved.',
 };

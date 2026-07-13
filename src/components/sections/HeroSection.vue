@@ -1,17 +1,119 @@
 <script setup lang="ts">
+import { onBeforeUnmount, onMounted, ref } from 'vue';
 import { useSiteContent } from '@/composables/useSiteContent';
 import { socialLinks } from '@/constants/site';
 
 const { heroContent } = useSiteContent();
+
+const heroSectionRef = ref<HTMLElement | null>(null);
+const heroVideoRef = ref<HTMLVideoElement | null>(null);
+const heroAudioRef = ref<HTMLAudioElement | null>(null);
+
+let isHeroVisible = true;
+let hasAudioPermission = false;
+let observer: IntersectionObserver | null = null;
+let syncTimer = 0;
+
+const syncHeroAudio = () => {
+  const video = heroVideoRef.value;
+  const audio = heroAudioRef.value;
+
+  if (!video || !audio) {
+    return;
+  }
+
+  if (Math.abs(audio.currentTime - video.currentTime) > 0.25) {
+    audio.currentTime = video.currentTime;
+  }
+};
+
+const playHeroMedia = async () => {
+  const video = heroVideoRef.value;
+  const audio = heroAudioRef.value;
+
+  if (!video || !audio || !isHeroVisible || document.hidden) {
+    return;
+  }
+
+  await video.play().catch(() => undefined);
+
+  if (!hasAudioPermission) {
+    return;
+  }
+
+  syncHeroAudio();
+  await audio.play().catch(() => undefined);
+};
+
+const pauseHeroAudio = () => {
+  heroAudioRef.value?.pause();
+};
+
+const handleHeroVisibility = (entries: IntersectionObserverEntry[]) => {
+  const entry = entries[0];
+  isHeroVisible = entry.isIntersecting && entry.intersectionRatio >= 0.35;
+
+  if (isHeroVisible) {
+    void playHeroMedia();
+    return;
+  }
+
+  pauseHeroAudio();
+};
+
+const unlockHeroAudio = () => {
+  hasAudioPermission = true;
+  void playHeroMedia();
+};
+
+const handlePageVisibility = () => {
+  if (document.hidden) {
+    pauseHeroAudio();
+    return;
+  }
+
+  void playHeroMedia();
+};
+
+onMounted(() => {
+  const section = heroSectionRef.value;
+
+  observer = new IntersectionObserver(handleHeroVisibility, {
+    threshold: [0, 0.35, 0.65],
+  });
+
+  if (section) {
+    observer.observe(section);
+  }
+
+  window.addEventListener('pointerdown', unlockHeroAudio, { once: true, passive: true });
+  window.addEventListener('keydown', unlockHeroAudio, { once: true });
+  document.addEventListener('visibilitychange', handlePageVisibility);
+
+  syncTimer = window.setInterval(syncHeroAudio, 1000);
+});
+
+onBeforeUnmount(() => {
+  observer?.disconnect();
+  window.removeEventListener('pointerdown', unlockHeroAudio);
+  window.removeEventListener('keydown', unlockHeroAudio);
+  document.removeEventListener('visibilitychange', handlePageVisibility);
+
+  if (syncTimer) {
+    window.clearInterval(syncTimer);
+  }
+});
 </script>
 
 <template>
   <section
+    ref="heroSectionRef"
     id="home"
     class="relative isolate h-[100svh] min-h-[760px] overflow-hidden bg-aurora-mint"
     aria-labelledby="hero-title"
   >
     <video
+      ref="heroVideoRef"
       :src="heroContent.background.src"
       :poster="heroContent.background.poster"
       :width="heroContent.background.width"
@@ -26,6 +128,14 @@ const { heroContent } = useSiteContent();
       controlslist="nodownload nofullscreen noremoteplayback"
       aria-hidden="true"
       class="absolute inset-0 -z-20 h-full w-full object-cover"
+    />
+
+    <audio
+      ref="heroAudioRef"
+      :src="heroContent.background.src"
+      loop
+      preload="metadata"
+      aria-hidden="true"
     />
 
     <div
