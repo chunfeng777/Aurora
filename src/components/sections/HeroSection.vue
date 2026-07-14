@@ -7,6 +7,23 @@ const { heroContent } = useSiteContent();
 
 const heroVideoRef = ref<HTMLVideoElement | null>(null);
 const heroAudioRef = ref<HTMLAudioElement | null>(null);
+const audioUnlockListenerOptions = { once: true, passive: true, capture: true };
+let isAudioUnlocked = false;
+
+const syncAudioToVideo = () => {
+  const video = heroVideoRef.value;
+  const audio = heroAudioRef.value;
+
+  if (!video || !audio || !Number.isFinite(audio.duration) || audio.duration <= 0) {
+    return;
+  }
+
+  const expectedTime = video.currentTime % audio.duration;
+
+  if (Math.abs(audio.currentTime - expectedTime) > 0.35) {
+    audio.currentTime = expectedTime;
+  }
+};
 
 const playHeroAudio = () => {
   const audio = heroAudioRef.value;
@@ -15,20 +32,22 @@ const playHeroAudio = () => {
     return;
   }
 
+  if (isAudioUnlocked) {
+    syncAudioToVideo();
+  }
+
   void audio.play().catch(() => undefined);
 };
 
-const playHeroMedia = async () => {
+const playHeroMedia = () => {
   const video = heroVideoRef.value;
-  const audio = heroAudioRef.value;
 
-  if (!video || !audio || document.hidden) {
+  if (!video || document.hidden) {
     return;
   }
 
-  const videoPlayback = video.play().catch(() => undefined);
-  const audioPlayback = audio.play().catch(() => undefined);
-  await Promise.all([videoPlayback, audioPlayback]);
+  void video.play().catch(() => undefined);
+  playHeroAudio();
 };
 
 const pauseHeroAudio = () => {
@@ -36,8 +55,8 @@ const pauseHeroAudio = () => {
 };
 
 const unlockHeroAudio = () => {
-  playHeroAudio();
-  void playHeroMedia();
+  isAudioUnlocked = true;
+  playHeroMedia();
 };
 
 const handlePageVisibility = () => {
@@ -46,19 +65,25 @@ const handlePageVisibility = () => {
     return;
   }
 
-  void playHeroMedia();
+  playHeroMedia();
 };
 
 onMounted(() => {
-  heroAudioRef.value?.load();
-  window.addEventListener('pointerdown', unlockHeroAudio, { passive: true });
-  window.addEventListener('keydown', unlockHeroAudio);
+  const audio = heroAudioRef.value;
+
+  if (audio) {
+    audio.volume = 0.82;
+  }
+
+  playHeroMedia();
+  window.addEventListener('pointerdown', unlockHeroAudio, audioUnlockListenerOptions);
+  window.addEventListener('keydown', unlockHeroAudio, { once: true, capture: true });
   document.addEventListener('visibilitychange', handlePageVisibility);
 });
 
 onBeforeUnmount(() => {
-  window.removeEventListener('pointerdown', unlockHeroAudio);
-  window.removeEventListener('keydown', unlockHeroAudio);
+  window.removeEventListener('pointerdown', unlockHeroAudio, true);
+  window.removeEventListener('keydown', unlockHeroAudio, true);
   document.removeEventListener('visibilitychange', handlePageVisibility);
 });
 </script>
@@ -84,7 +109,6 @@ onBeforeUnmount(() => {
       disablepictureinpicture
       controlslist="nodownload nofullscreen noremoteplayback"
       @play="playHeroAudio"
-      @pause="pauseHeroAudio"
       aria-hidden="true"
       class="absolute inset-0 -z-20 h-full w-full object-cover"
     />
@@ -92,8 +116,10 @@ onBeforeUnmount(() => {
     <audio
       ref="heroAudioRef"
       :src="heroContent.audioSrc"
+      autoplay
       loop
       preload="auto"
+      @canplay="playHeroAudio"
       aria-hidden="true"
     />
 
