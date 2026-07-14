@@ -5,6 +5,9 @@ import { defineConfig } from 'vite';
 
 export default defineConfig({
   plugins: [vue()],
+  server: {
+    allowedHosts: ['.ngrok-free.app', '.ngrok-free.dev'],
+  },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),

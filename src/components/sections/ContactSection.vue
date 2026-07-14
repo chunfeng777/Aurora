@@ -29,7 +29,6 @@ const singleOptionSelections = reactive<Record<number, string>>({
 type SubmissionMessageKey =
   | 'validationError'
   | 'success'
-  | 'savedWithoutMail'
   | 'networkError'
   | 'serverError';
 
@@ -37,8 +36,6 @@ const submissionMessages = {
   en: {
     validationError: 'Please provide your full name and at least one contact method.',
     success: 'Submitted successfully! Thank you. We will be in touch shortly.',
-    savedWithoutMail:
-      'Submitted successfully! Your consultation record has been saved. The email notification could not be sent.',
     networkError:
       'Unable to connect to the consultation service. Please check your connection and try again.',
     serverError: 'Unable to submit your request. Please try again later.',
@@ -46,7 +43,6 @@ const submissionMessages = {
   zh: {
     validationError: '请填写姓名，并至少留下一种联系方式。',
     success: '提交成功！感谢您的咨询，我们会尽快与您联系。',
-    savedWithoutMail: '提交成功！您的咨询记录已保存，邮件通知暂时未能发送。',
     networkError: '无法连接到咨询服务，请检查网络后重试。',
     serverError: '提交失败，请稍后重试。',
   },
@@ -138,7 +134,7 @@ const submitConsultation = async () => {
       if (error.code === 'mail_notification_failed_after_save') {
         resetForm();
         submissionState.value = 'success';
-        submissionMessageKey.value = 'savedWithoutMail';
+        submissionMessageKey.value = 'success';
         return;
       }
 
