@@ -34,16 +34,9 @@ const { aboutContent } = useSiteContent();
           loading="lazy"
           class="absolute inset-0 h-full w-full object-cover"
         />
-        <div class="absolute inset-0 bg-aurora-mint/80" />
-        <div
-          class="absolute inset-x-0 top-0 h-[500px] bg-gradient-to-b from-aurora-mint via-aurora-mint/88 to-aurora-mint/10"
-        />
-        <div
-          class="absolute inset-x-0 bottom-0 h-[590px] bg-gradient-to-t from-aurora-mint/40 to-aurora-mint/0"
-        />
 
         <blockquote
-          class="relative z-10 px-[46px] pt-[39px] font-body text-[22px] leading-[35px] text-white"
+          class="relative z-10 px-[46px] pt-[39px] font-body text-[22px] leading-[35px] text-white [text-shadow:0_2px_12px_rgb(0_0_0_/_0.52)]"
         >
           <p>"{{ aboutContent.testimonial.quote }}"</p>
           <footer class="mt-[139px] text-right text-[22px] leading-[35px]">

@@ -250,8 +250,8 @@ export const aboutContent: AboutContent = {
   image: {
     src: aboutConsultationUrl,
     alt: 'Aurora advisor meeting with intended parents',
-    width: 1664,
-    height: 2496,
+    width: 1158,
+    height: 1736,
   },
 };
 

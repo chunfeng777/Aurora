@@ -48,9 +48,12 @@ const { journeyClosing, journeyCtaLabel, journeyHeading, journeySteps } = useSit
         </p>
         <a
           href="#contact"
-          class="mt-[53px] inline-flex min-h-[90px] w-[min(817px,100%)] items-center justify-center rounded-aurora-pill bg-white px-8 font-display text-[clamp(32px,2.19vw,42px)] font-bold leading-[59px] text-aurora-mint shadow-sm transition-transform duration-200 hover:-translate-y-1"
+          class="mt-[53px] inline-flex h-[90px] w-[min(817px,100%)] overflow-hidden rounded-l-[45px] bg-white font-display text-[clamp(32px,2.19vw,42px)] font-bold leading-[59px] text-aurora-mint shadow-sm transition-transform duration-200 hover:-translate-y-1"
         >
-          {{ journeyCtaLabel }}
+          <span class="flex min-w-0 flex-1 items-center justify-center px-8">
+            {{ journeyCtaLabel }}
+          </span>
+          <span class="h-full aspect-square shrink-0 bg-[#d9d9d9]" aria-hidden="true" />
         </a>
       </div>
     </div>
