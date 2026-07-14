@@ -50,6 +50,7 @@ const handlePageVisibility = () => {
 };
 
 onMounted(() => {
+  heroAudioRef.value?.load();
   window.addEventListener('pointerdown', unlockHeroAudio, { passive: true });
   window.addEventListener('keydown', unlockHeroAudio);
   document.addEventListener('visibilitychange', handlePageVisibility);
@@ -92,7 +93,7 @@ onBeforeUnmount(() => {
       ref="heroAudioRef"
       :src="heroContent.audioSrc"
       loop
-      preload="none"
+      preload="auto"
       aria-hidden="true"
     />
 
