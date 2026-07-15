@@ -10,6 +10,7 @@ const { heroContent, navItems } = useSiteContent();
 
 const activeHref = ref('#home');
 const observedSections = new Set<Element>();
+const observedSectionHrefs = new Map<Element, string>();
 
 let sectionObserver: IntersectionObserver | undefined;
 let contentObserver: MutationObserver | undefined;
@@ -23,10 +24,12 @@ const syncActiveHrefFromHash = () => {
 
 const observeAvailableSections = () => {
   navItems.value.forEach((item) => {
-    const section = document.querySelector(item.href);
+    const observationSelector = item.href === '#contact-information' ? '#contact' : item.href;
+    const section = document.querySelector(observationSelector);
 
     if (section && !observedSections.has(section)) {
       observedSections.add(section);
+      observedSectionHrefs.set(section, item.href);
       sectionObserver?.observe(section);
     }
   });
@@ -41,9 +44,22 @@ const clearPendingNavigation = () => {
   }
 };
 
-const handleNavigationClick = (href: string) => {
+const handleNavigationClick = (event: MouseEvent, href: string) => {
+  const target = document.querySelector(href);
+
+  if (!target) {
+    return;
+  }
+
+  event.preventDefault();
   activeHref.value = href;
   pendingHref = href;
+
+  const topOffset = href === '#contact-information' ? 150 : 0;
+  const targetTop = target.getBoundingClientRect().top + window.scrollY - topOffset;
+
+  window.history.pushState(null, '', href);
+  window.scrollTo({ top: Math.max(0, targetTop), behavior: 'smooth' });
 
   if (navigationUnlockTimer !== undefined) {
     window.clearTimeout(navigationUnlockTimer);
@@ -59,7 +75,7 @@ onMounted(() => {
     (entries) => {
       if (pendingHref) {
         const pendingSectionReached = entries.some(
-          (entry) => entry.isIntersecting && `#${entry.target.id}` === pendingHref,
+          (entry) => entry.isIntersecting && observedSectionHrefs.get(entry.target) === pendingHref,
         );
 
         if (pendingSectionReached) {
@@ -75,7 +91,7 @@ onMounted(() => {
         .sort((first, second) => first.boundingClientRect.top - second.boundingClientRect.top)[0];
 
       if (currentSection?.target.id) {
-        activeHref.value = `#${currentSection.target.id}`;
+        activeHref.value = observedSectionHrefs.get(currentSection.target) ?? '#home';
       }
     },
     {
@@ -129,7 +145,7 @@ onBeforeUnmount(() => {
           :href="item.href"
           class="group relative font-body text-[24px] uppercase leading-[30px] text-aurora-mint transition-colors duration-200 hover:text-aurora-mint-dark"
           :aria-current="activeHref === item.href ? 'location' : undefined"
-          @click="handleNavigationClick(item.href)"
+          @click="handleNavigationClick($event, item.href)"
         >
           <span>{{ item.label }}</span>
           <span

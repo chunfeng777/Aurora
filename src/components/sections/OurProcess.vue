@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import { useLocale } from '@/composables/useLocale';
 import { useSiteContent } from '@/composables/useSiteContent';
 
+const { locale } = useLocale();
 const { processCtaLabel, processHeading, processSteps } = useSiteContent();
 </script>
 
@@ -24,31 +26,25 @@ const { processCtaLabel, processHeading, processSteps } = useSiteContent();
           :key="step.index"
           :aria-describedby="`process-step-${step.index}-description`"
           tabindex="0"
-          class="process-card relative h-[245px] overflow-hidden rounded-auroraCard bg-white text-center shadow-auroraCard"
+          class="process-card relative h-[245px] text-center"
         >
-          <div class="process-card__summary absolute inset-0 flex flex-col items-center pt-[31px]" aria-hidden="true">
+          <div class="process-card__surface absolute inset-x-0 bottom-0 h-[150px] rounded-auroraCard bg-white shadow-auroraCard">
             <div
-              class="grid size-[103px] place-items-center rounded-full bg-aurora-mint font-display text-[60px] font-black leading-none text-white"
+              class="process-card__number absolute left-1/2 top-[-22px] grid size-[103px] -translate-x-1/2 place-items-center rounded-full bg-aurora-mint font-display text-[60px] font-black leading-none text-white"
             >
               {{ step.index }}
             </div>
-            <p class="mt-[31px] px-5 font-display text-[30px] font-black leading-[42px] text-aurora-mint">
-              {{ step.title }}
-            </p>
-          </div>
 
-          <div class="process-card__details absolute inset-0 flex flex-col items-center justify-center px-7 py-4">
-            <div
-              class="grid size-[82px] shrink-0 place-items-center rounded-full bg-white font-display text-[48px] font-black leading-none text-aurora-mint"
+            <h3
+              class="process-card__title absolute bottom-[22px] left-5 right-5 font-display text-[30px] font-black leading-[42px] text-aurora-mint"
             >
-              {{ step.index }}
-            </div>
-            <h3 class="mt-3 font-display text-[26px] font-black leading-[36px] text-white">
               {{ step.title }}
             </h3>
+
             <p
               :id="`process-step-${step.index}-description`"
-              class="mt-2 max-w-[410px] font-body text-[18px] leading-[26px] text-white"
+              class="process-card__description absolute bottom-[25px] left-1/2 w-[calc(100%-24px)] -translate-x-1/2 text-center font-body leading-[26px] text-white"
+              :class="locale === 'zh' && step.index === 3 ? 'whitespace-nowrap text-[14px]' : 'text-[18px]'"
             >
               {{ step.description }}
             </p>
@@ -57,71 +53,86 @@ const { processCtaLabel, processHeading, processSteps } = useSiteContent();
       </div>
 
       <div class="mt-[105px] text-center">
-        <a
-          href="#contact"
-          class="inline-flex h-[90px] w-[min(817px,100%)] items-center justify-center rounded-[45px] bg-[#83d4b3] px-8 font-display text-[40px] font-bold leading-[59px] text-white shadow-sm transition-all duration-200 hover:-translate-y-1 hover:bg-aurora-mint-dark focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-aurora-mint/40 max-sm:h-[64px] max-sm:rounded-[32px] max-sm:px-5 max-sm:text-[24px] max-sm:leading-[32px]"
+        <p
+          class="mx-auto flex h-[90px] w-[min(817px,100%)] items-center justify-center rounded-[45px] bg-[#83d4b3] px-8 font-display text-[40px] font-bold leading-[59px] text-white shadow-sm max-sm:h-[64px] max-sm:rounded-[32px] max-sm:px-5 max-sm:text-[24px] max-sm:leading-[32px]"
         >
           {{ processCtaLabel }}
-        </a>
+        </p>
       </div>
     </div>
   </section>
 </template>
 
 <style scoped>
-.process-card {
+.process-card__surface {
   transition:
-    background-color 300ms ease,
-    transform 480ms cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow 480ms cubic-bezier(0.22, 1, 0.36, 1);
+    height 1400ms cubic-bezier(0.4, 0, 0.2, 1),
+    background-color 760ms ease,
+    box-shadow 1200ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.process-card__summary,
-.process-card__details {
+.process-card__number {
   transition:
-    opacity 240ms ease,
-    transform 480ms cubic-bezier(0.22, 1, 0.36, 1);
+    top 1200ms cubic-bezier(0.4, 0, 0.2, 1),
+    background-color 760ms ease,
+    color 760ms ease,
+    transform 1200ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.process-card__summary {
-  opacity: 1;
-  transform: translateY(0) scale(1);
-  transition-delay: 90ms;
+.process-card__title {
+  transition:
+    bottom 1200ms cubic-bezier(0.4, 0, 0.2, 1),
+    color 760ms ease,
+    transform 1200ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.process-card__details {
+.process-card__description {
   opacity: 0;
-  transform: translateY(26px) scale(0.98);
-  transition-delay: 0ms;
+  transform: translate(-50%, 14px);
+  transition:
+    opacity 220ms ease,
+    transform 320ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.process-card:is(:hover, :focus) {
+.process-card:is(:hover, :focus) .process-card__surface {
+  height: 245px;
   background-color: var(--color-mint);
   box-shadow: 0 24px 46px rgb(38 135 103 / 22%);
-  transform: translateY(-12px);
 }
 
-.process-card:is(:hover, :focus) .process-card__summary {
-  opacity: 0;
-  transform: translateY(-24px) scale(0.97);
-  transition-delay: 0ms;
+.process-card:is(:hover, :focus) .process-card__number {
+  top: 24px;
+  background-color: white;
+  color: var(--color-mint);
+  transform: translateX(-50%) scale(0.72);
 }
 
-.process-card:is(:hover, :focus) .process-card__details {
+.process-card:is(:hover, :focus) .process-card__title {
+  bottom: 90px;
+  color: white;
+  transform: scale(0.9);
+}
+
+.process-card:is(:hover, :focus) .process-card__description {
   opacity: 1;
-  transform: translateY(0) scale(1);
-  transition-delay: 100ms;
+  transform: translate(-50%, 0);
+  transition-delay: 0ms;
 }
 
 .process-card:focus-visible {
+  outline: none;
+}
+
+.process-card:focus-visible .process-card__surface {
   outline: 3px solid var(--color-gold);
   outline-offset: 6px;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .process-card,
-  .process-card__summary,
-  .process-card__details {
+  .process-card__surface,
+  .process-card__number,
+  .process-card__title,
+  .process-card__description {
     transition-duration: 1ms;
     transition-delay: 0ms;
   }

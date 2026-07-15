@@ -1,9 +1,13 @@
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, ref } from 'vue';
+import AnimatedArrow from '@/components/ui/AnimatedArrow.vue';
+import { useLocale } from '@/composables/useLocale';
 import { useSiteContent } from '@/composables/useSiteContent';
 import { socialLinks } from '@/constants/site';
 
+const { locale } = useLocale();
 const { heroContent } = useSiteContent();
+const chineseBrandTitle = '极光国际家庭咨询';
 
 const heroVideoRef = ref<HTMLVideoElement | null>(null);
 const heroAudioRef = ref<HTMLAudioElement | null>(null);
@@ -139,12 +143,24 @@ onBeforeUnmount(() => {
 
       <h1
         id="hero-title"
-        class="mt-[18px] max-w-[975px] whitespace-pre-line font-display text-[clamp(48px,3.4vw,65px)] font-black leading-[1.38]"
+        class="max-w-[975px] whitespace-pre-line font-display text-[clamp(48px,3.4vw,65px)] font-black leading-[1.38]"
+        :class="locale === 'zh' ? 'mt-[38px]' : 'mt-[18px]'"
       >
-        {{ heroContent.title }}
+        <template v-if="locale === 'zh'">
+          <span class="block whitespace-nowrap text-[clamp(64px,4.4vw,84px)] leading-[1.12]">
+            {{ chineseBrandTitle }}
+          </span>
+          <span class="mt-[12px] block whitespace-nowrap text-[clamp(24px,1.8vw,34px)] leading-[1.18]">
+            Aurora International Family Advisory
+          </span>
+        </template>
+        <template v-else>{{ heroContent.title }}</template>
       </h1>
 
-      <p class="mt-[28px] max-w-[1051px] font-body text-[clamp(22px,1.8vw,35px)] leading-[35px]">
+      <p
+        class="max-w-[1051px] font-body text-[clamp(22px,1.8vw,35px)] leading-[35px]"
+        :class="locale === 'zh' ? 'mt-[46px]' : 'mt-[28px]'"
+      >
         {{ heroContent.subtitle }}
       </p>
 
@@ -153,7 +169,7 @@ onBeforeUnmount(() => {
         class="relative mt-[54px] inline-flex h-[75px] w-[min(521px,100%)] items-center justify-center rounded-[38px] bg-aurora-mint px-14 text-center font-display text-[clamp(24px,1.7vw,33px)] font-black leading-none text-white shadow-auroraCard transition-transform duration-200 hover:-translate-y-1 focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-white/80"
       >
         <span>{{ heroContent.ctaLabel }}</span>
-        <span aria-hidden="true" class="absolute right-[34px] text-[38px] font-normal leading-none">&rsaquo;</span>
+        <AnimatedArrow class="absolute right-[26px]" />
       </a>
     </div>
 

@@ -28,7 +28,7 @@ const getContactIconKey = (label: string) => {
     return 'email';
   }
 
-  if (label.startsWith('+')) {
+  if (/^\+?\d/.test(label)) {
     return 'phone';
   }
 

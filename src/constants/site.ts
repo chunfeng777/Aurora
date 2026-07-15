@@ -1,6 +1,7 @@
 import aboutConsultationUrl from '@/assets/images/about-consultation.jpg';
 import auroraLogoUrl from '@/assets/images/aurora-logo.svg';
 import contactMailIconUrl from '@/assets/images/contact-mail.svg';
+import contactWechatIconUrl from '@/assets/images/contact-wechat.svg';
 import contactWhatsappIconUrl from '@/assets/images/contact-whatsapp.svg';
 import familyJourneyCtaUrl from '@/assets/images/family-journey-cta.jpg';
 import serviceConciergeIconUrl from '@/assets/images/service-concierge.svg';
@@ -42,7 +43,7 @@ export const navItems: readonly NavItem[] = [
   { label: 'About Us', href: '#about' },
   { label: 'Services', href: '#services' },
   { label: 'Process', href: '#process' },
-  { label: 'Contact', href: '#contact' },
+  { label: 'Contact', href: '#contact-information' },
 ];
 
 export const auroraLogo: ImageAsset = {
@@ -245,7 +246,7 @@ export const aboutContent: AboutContent = {
   testimonial: {
     quote:
       "I didn't want to manage every detail myself, and I didn't have to. Everything was handled in a way that felt organized and under control. I always knew where things stood, without having to spend time following up.",
-    author: '- Mr. Cheung, HongKong',
+    author: '- Mr. Cheung, Hong Kong',
   },
   image: {
     src: aboutConsultationUrl,
@@ -269,7 +270,7 @@ export const familyCtaContent: FamilyCtaContent = {
 export const contactContent: ContactContent = {
   title: 'Contact Us',
   quote: '"A private consultation to explore your next step."',
-  subtitle: 'Your journey deserves clarity, privacy, and thoughtful guidance.',
+  subtitle: 'Supporting global intended parents, wherever you are.',
   intro:
     'A private consultation is the first step toward understanding your options and building a plan that feels right for you.',
   fields: [
@@ -313,13 +314,18 @@ export const contactContent: ContactContent = {
   methods: [
     {
       label: 'Email',
-      value: 'xiaohanli814921189@gmail.com',
+      value: 'info@auroraifa.com',
       icon: { src: contactMailIconUrl, alt: '', width: 44, height: 40 },
     },
     {
       label: 'WhatsApp',
-      value: '+1 (212) 555-1234',
+      value: '765-881-0394',
       icon: { src: contactWhatsappIconUrl, alt: '', width: 82, height: 82 },
+    },
+    {
+      label: 'WeChat',
+      value: 'abcdedf',
+      icon: { src: contactWechatIconUrl, alt: '', width: 82, height: 82 },
     },
   ],
   privacyNote: 'Your information will be handled with complete discretion and confidentiality.',
@@ -350,9 +356,9 @@ export const footerContent: FooterContent = {
     {
       title: 'Contact Us',
       links: [
-        { label: 'xiaohanli814921189@gmail.com', href: 'mailto:xiaohanli814921189@gmail.com' },
-        { label: 'AuroraFamilyAdvisory', href: '#' },
-        { label: '+1 (212) 555-1234', href: 'tel:+12125551234' },
+        { label: 'info@auroraifa.com', href: 'mailto:info@auroraifa.com' },
+        { label: 'WeChat: abcdedf', href: '#' },
+        { label: '765-881-0394', href: 'tel:+17658810394' },
       ],
     },
   ],

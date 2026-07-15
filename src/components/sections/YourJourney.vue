@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import AnimatedArrow from '@/components/ui/AnimatedArrow.vue';
 import { useSiteContent } from '@/composables/useSiteContent';
 
 const { journeyClosing, journeyCtaLabel, journeyHeading, journeySteps } = useSiteContent();
@@ -11,7 +12,9 @@ const { journeyClosing, journeyCtaLabel, journeyHeading, journeySteps } = useSit
         <h2 class="font-display text-[clamp(42px,3.125vw,60px)] font-black leading-[1.2]">
           {{ journeyHeading.title }}
         </h2>
-        <p class="mt-[33px] font-body text-[clamp(24px,1.82vw,35px)] leading-[35px]">
+        <p
+          class="mx-auto mt-[33px] w-fit text-center font-body text-[clamp(24px,1.82vw,35px)] leading-[35px]"
+        >
           {{ journeyHeading.subtitle }}
         </p>
       </div>
@@ -48,12 +51,10 @@ const { journeyClosing, journeyCtaLabel, journeyHeading, journeySteps } = useSit
         </p>
         <a
           href="#contact"
-          class="mt-[53px] inline-flex h-[90px] w-[min(817px,100%)] overflow-hidden rounded-l-[45px] bg-white font-display text-[clamp(32px,2.19vw,42px)] font-bold leading-[59px] text-aurora-mint shadow-sm transition-transform duration-200 hover:-translate-y-1"
+          class="group relative mt-[53px] inline-flex h-[90px] w-[min(817px,100%)] items-center justify-center rounded-[45px] bg-white px-[86px] font-display text-[clamp(32px,2.19vw,42px)] font-bold leading-[59px] text-aurora-mint shadow-sm transition-transform duration-200 hover:-translate-y-1 max-md:h-[72px] max-md:px-16"
         >
-          <span class="flex min-w-0 flex-1 items-center justify-center px-8">
-            {{ journeyCtaLabel }}
-          </span>
-          <span class="h-full aspect-square shrink-0 bg-[#d9d9d9]" aria-hidden="true" />
+          <span>{{ journeyCtaLabel }}</span>
+          <AnimatedArrow class="absolute right-[30px]" />
         </a>
       </div>
     </div>

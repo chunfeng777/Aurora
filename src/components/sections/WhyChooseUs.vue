@@ -24,7 +24,8 @@ const { whyChooseUsCards, whyChooseUsHeading } = useSiteContent();
         <article
           v-for="card in whyChooseUsCards"
           :key="card.title"
-          class="relative min-h-[503px] rounded-auroraCard bg-white px-[31px] pb-[31px] pt-[54px] shadow-auroraCard"
+          tabindex="0"
+          class="why-card relative min-h-[503px] rounded-auroraCard bg-white px-[31px] pb-[31px] pt-[54px] shadow-auroraCard outline-none"
         >
           <img
             :src="card.icon.src"
@@ -47,3 +48,29 @@ const { whyChooseUsCards, whyChooseUsHeading } = useSiteContent();
     </div>
   </section>
 </template>
+
+<style scoped>
+.why-card {
+  transition:
+    transform 420ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 420ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.why-card:is(:hover, :focus-visible) {
+  transform: translateY(-6px);
+  box-shadow:
+    0 24px 38px rgb(73 184 140 / 28%),
+    0 8px 18px rgb(38 135 103 / 14%);
+}
+
+.why-card:focus-visible {
+  outline: 3px solid rgb(131 212 179 / 65%);
+  outline-offset: 5px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .why-card {
+    transition-duration: 1ms;
+  }
+}
+</style>

@@ -24,7 +24,7 @@ const { aboutContent } = useSiteContent();
       </div>
 
       <article
-        class="relative min-h-[979px] overflow-hidden rounded-[10px] bg-aurora-mint shadow-auroraCard max-xl:min-h-[720px]"
+        class="relative min-h-[979px] overflow-hidden rounded-[16px] bg-aurora-mint max-xl:min-h-[720px]"
       >
         <img
           :src="aboutContent.image.src"
@@ -32,14 +32,19 @@ const { aboutContent } = useSiteContent();
           :width="aboutContent.image.width"
           :height="aboutContent.image.height"
           loading="lazy"
-          class="absolute inset-0 h-full w-full object-cover"
+          class="absolute inset-x-0 bottom-0 h-[868px] w-full object-cover max-xl:h-full"
         />
 
-        <blockquote
-          class="relative z-10 px-[46px] pt-[39px] font-body text-[22px] leading-[35px] text-white [text-shadow:0_2px_12px_rgb(0_0_0_/_0.52)]"
-        >
-          <p>"{{ aboutContent.testimonial.quote }}"</p>
-          <footer class="mt-[139px] text-right text-[22px] leading-[35px]">
+        <div
+          aria-hidden="true"
+          class="about-testimonial__overlay absolute inset-x-0 top-0 z-[2] h-[684px] rounded-[16px] max-xl:h-[70%]"
+        />
+
+        <blockquote class="absolute inset-0 z-10 font-body font-normal text-white">
+          <p class="absolute left-[45px] right-[31px] top-[32px] text-[25px] leading-[40px]">"{{ aboutContent.testimonial.quote }}"</p>
+          <footer
+            class="absolute left-[203px] right-[31px] top-[404px] text-right text-[25px] leading-[40px]"
+          >
             {{ aboutContent.testimonial.author }}
           </footer>
         </blockquote>
@@ -47,3 +52,14 @@ const { aboutContent } = useSiteContent();
     </div>
   </section>
 </template>
+
+<style scoped>
+.about-testimonial__overlay {
+  background: linear-gradient(
+    to bottom,
+    #83d4b3 16.357%,
+    rgb(131 212 179 / 77%) 62.9%,
+    rgb(131 212 179 / 0%) 100%
+  );
+}
+</style>

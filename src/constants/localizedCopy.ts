@@ -166,7 +166,7 @@ export const zhCopy: SiteCopy = {
     paragraphs: [
       '我们始终相信，建立一个家庭，不应该因为地域、信息或流程，而变得遥不可及。',
       '每一个家庭都有属于自己的故事，也没有任何两段旅程会完全相同。每一次选择，都承载着情感、现实与未来，因此值得被认真倾听，也值得拥有真正适合自己的解决方案。',
-      'Aurora International Family Advisory 正是在这样的理念下创立。我们希望通过专业的咨询、可靠的资源以及全程的陪伴，让复杂的跨境家庭规划变得更加清晰、有序，也让客户能够把更多时间与心力，留给真正重要的人与事。',
+      '极光国际家庭咨询正是在这样的理念下创立。我们希望通过专业的咨询、可靠的资源以及全程的陪伴，让复杂的跨境家庭规划变得更加清晰、有序，也让客户能够把更多时间与心力，留给真正重要的人与事。',
       '我们关注的不只是流程能否顺利完成，更在意整个过程是否足够安心、从容。每一个案例，我们都以尊重、谨慎的态度，认真、负责地对待。因为我们知道，这不仅是一项服务，更是一个家庭重要的新篇章。',
       '我们希望，这段旅程始终有人陪伴、有人支持，也有人替您妥善处理每一个细节，让您能够专注于真正重要的人与事。',
     ],
@@ -181,8 +181,8 @@ export const zhCopy: SiteCopy = {
   },
   contact: {
     title: '联系我们',
-    quote: '“每一份期待，都值得被认真倾听；每一个重要决定，都值得从一次专属咨询开始。”',
-    subtitle: '无论您来自哪里，我们都期待与您相遇，陪伴您开启这段旅程。',
+    quote: '“通过一次私人咨询，探索您的下一步。”',
+    subtitle: '无论您身在何处，我们都为全球意向父母提供支持。',
     intro: '准备好迈出下一步了吗？预约一次专属咨询。',
     fieldLabels: ['姓名', '邮箱', '联系电话 / WhatsApp', '微信号'],
     optionGroups: [
@@ -194,8 +194,8 @@ export const zhCopy: SiteCopy = {
     messageLabel: '欢迎告诉我们更多关于您的情况（选填）',
     submitLabel: '预约专属咨询',
     informationTitle: '联系我们',
-    methodLabels: ['邮箱', 'WhatsApp'],
-    methodValues: ['xiaohanli814921189@gmail.com', '+1 (212) 555-1234'],
+    methodLabels: ['邮箱', 'WhatsApp', '微信'],
+    methodValues: ['info@auroraifa.com', '765-881-0394', 'abcdedf'],
     privacyNote: '我们尊重每一位客户的隐私，您提供的所有信息都将严格保密，并仅用于本次咨询。',
   },
   footer: {
@@ -204,7 +204,7 @@ export const zhCopy: SiteCopy = {
     linkLabels: [
       ['首页', '关于我们', '服务内容', '服务流程', '联系我们'],
       ['生育咨询与试管', '资源与诊所匹配', '专属礼宾服务'],
-      ['info@auroraifa.com', 'AuroraFamilyAdvisory', '765-881-0394'],
+      ['info@auroraifa.com', 'WeChat: abcdedf', '765-881-0394'],
     ],
     copyright: '© 2026 Aurora International Family Advisory Inc. All rights reserved.',
   },

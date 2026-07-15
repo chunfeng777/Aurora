@@ -7,7 +7,7 @@ const { serviceCards, servicesHeading } = useSiteContent();
 </script>
 
 <template>
-  <section id="services" class="bg-aurora-mint pb-[165px] pt-[79px]">
+  <section id="services" class="bg-aurora-mint pb-[165px] pt-[181px]">
     <div class="aurora-container">
       <div class="text-center text-white">
         <h2 class="font-display text-[clamp(42px,3.125vw,60px)] font-black leading-[1.2]">
@@ -31,7 +31,10 @@ const { serviceCards, servicesHeading } = useSiteContent();
           <div
             class="service-card__panel relative h-[476px] overflow-hidden rounded-auroraInner bg-aurora-mint-soft px-7 py-[18px] sm:h-[436px] 2xl:h-[402px]"
           >
-            <div class="service-card__summary absolute inset-[18px_28px] flex flex-col items-center" aria-hidden="true">
+            <div
+              class="service-card__summary absolute inset-[18px_28px] flex flex-col items-center justify-center"
+              aria-hidden="true"
+            >
               <p class="font-display text-[20px] font-bold leading-[1.2] text-aurora-mint sm:text-[clamp(20px,1.35vw,26px)]">
                 {{ card.stage }}
               </p>
@@ -50,7 +53,7 @@ const { serviceCards, servicesHeading } = useSiteContent();
               </p>
             </div>
 
-            <div class="service-card__details absolute inset-y-5 left-7 right-7 flex flex-col items-center">
+            <div class="service-card__details absolute inset-y-5 left-7 right-7 flex flex-col items-center justify-center">
               <h3
                 class="max-w-[418px] whitespace-pre-line font-display text-[28px] font-bold leading-[1.35] text-aurora-mint sm:text-[clamp(31px,2.08vw,40px)] sm:leading-normal"
               >
@@ -64,13 +67,11 @@ const { serviceCards, servicesHeading } = useSiteContent();
             </div>
           </div>
 
-          <a
-            href="#contact"
-            class="service-card__cta absolute bottom-[19px] left-1/2 inline-flex -translate-x-1/2 items-center gap-3 whitespace-nowrap font-display text-[20px] font-bold leading-[35px] text-[#8fd2b7]"
+          <p
+            class="service-card__cta absolute bottom-[19px] left-1/2 -translate-x-1/2 whitespace-nowrap font-display text-[20px] font-bold leading-[35px] text-[#8fd2b7]"
           >
             {{ card.ctaLabel }}
-            <span aria-hidden="true" class="service-card__arrow -mt-1 text-[28px] leading-none">&nearr;</span>
-          </a>
+          </p>
         </article>
       </div>
     </div>
@@ -130,8 +131,7 @@ const { serviceCards, servicesHeading } = useSiteContent();
   transition-delay: 110ms;
 }
 
-.service-card__cta,
-.service-card__arrow {
+.service-card__cta {
   transition: transform 380ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -166,10 +166,6 @@ const { serviceCards, servicesHeading } = useSiteContent();
     transform: translateX(-50%) translateY(-2px);
   }
 
-  .service-card:hover .service-card__arrow,
-  .service-card:focus-within .service-card__arrow {
-    transform: translate(4px, -4px);
-  }
 }
 
 @media (hover: none), (pointer: coarse) {
@@ -189,8 +185,7 @@ const { serviceCards, servicesHeading } = useSiteContent();
   .service-card__panel,
   .service-card__summary,
   .service-card__details,
-  .service-card__cta,
-  .service-card__arrow {
+  .service-card__cta {
     transition-duration: 1ms;
     transition-delay: 0ms;
   }

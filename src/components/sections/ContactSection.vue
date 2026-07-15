@@ -352,6 +352,7 @@ const optionLabelClass =
       </form>
 
       <aside
+        id="contact-information"
         class="relative mx-auto mt-[101px] min-h-[296px] max-w-[1580px] rounded-[47px] bg-white px-[35px] pb-[48px] pt-[49px] text-aurora-mint shadow-[0_24px_28px_-18px_rgba(73,152,120,0.72)] max-lg:px-8 max-sm:min-h-0 max-sm:rounded-[28px] max-sm:px-6 max-sm:py-8"
         aria-labelledby="contact-information-title"
       >
@@ -363,12 +364,12 @@ const optionLabelClass =
         </h3>
 
         <div
-          class="mt-[46px] grid grid-cols-2 gap-x-12 gap-y-8 max-lg:grid-cols-1 min-[1700px]:grid-cols-[668px_668px] min-[1700px]:gap-x-[103px]"
+          class="mt-[46px] grid grid-cols-1 gap-x-[72px] gap-y-8 md:grid-cols-2 xl:grid-cols-3"
         >
           <article
             v-for="method in contactContent.methods"
             :key="method.label"
-            class="flex min-w-0 items-center gap-6"
+            class="flex min-w-0 items-center justify-self-center gap-6"
           >
             <span
               class="grid size-[82px] shrink-0 place-items-center overflow-hidden rounded-full bg-aurora-mint"
