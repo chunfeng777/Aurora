@@ -5,7 +5,10 @@ const { processCtaLabel, processHeading, processSteps } = useSiteContent();
 </script>
 
 <template>
-  <section id="process" class="bg-white pb-[162px] pt-[181px]">
+  <section
+    id="process"
+    class="desktop-ui-scale bg-white pb-[162px] pt-[181px] 2xl:pb-[100px] 2xl:pt-[120px]"
+  >
     <div class="aurora-container">
       <div class="text-center">
         <h2
@@ -18,7 +21,7 @@ const { processCtaLabel, processHeading, processSteps } = useSiteContent();
         </p>
       </div>
 
-      <div class="mt-[111px] grid gap-x-[70px] gap-y-[105px] xl:grid-cols-3">
+      <div class="mt-[111px] grid gap-x-[70px] gap-y-[105px] xl:grid-cols-3 2xl:mt-[70px] 2xl:gap-y-[60px]">
         <article
           v-for="step in processSteps"
           :key="step.index"
@@ -51,7 +54,7 @@ const { processCtaLabel, processHeading, processSteps } = useSiteContent();
         </article>
       </div>
 
-      <div class="mt-[105px] text-center">
+      <div class="mt-[105px] text-center 2xl:mt-[50px]">
         <p
           class="mx-auto flex h-[90px] w-[min(817px,100%)] items-center justify-center rounded-[45px] bg-[#83d4b3] px-8 font-display text-[40px] font-bold leading-[59px] text-white shadow-sm max-sm:h-[64px] max-sm:rounded-[32px] max-sm:px-5 max-sm:text-[24px] max-sm:leading-[32px]"
         >

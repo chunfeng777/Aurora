@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 
 import { useLocale } from '@/composables/useLocale';
 import { useSiteContent } from '@/composables/useSiteContent';
@@ -9,6 +9,20 @@ const { locale, setLocale } = useLocale();
 const { heroContent, navItems } = useSiteContent();
 
 const activeHref = ref('#home');
+const usesLightSectionBackdrop = computed(() =>
+  ['#about', '#process'].includes(activeHref.value),
+);
+const sectionBackdropStyle = computed(() => {
+  if (usesLightSectionBackdrop.value) {
+    return { background: '#ffffff' };
+  }
+
+  if (['#services', '#contact-information'].includes(activeHref.value)) {
+    return { background: '#83d4b3' };
+  }
+
+  return undefined;
+});
 const observedSections = new Set<Element>();
 const observedSectionHrefs = new Map<Element, string>();
 
@@ -24,8 +38,7 @@ const syncActiveHrefFromHash = () => {
 
 const observeAvailableSections = () => {
   navItems.value.forEach((item) => {
-    const observationSelector = item.href === '#contact-information' ? '#contact' : item.href;
-    const section = document.querySelector(observationSelector);
+    const section = document.querySelector(item.href);
 
     if (section && !observedSections.has(section)) {
       observedSections.add(section);
@@ -55,11 +68,13 @@ const handleNavigationClick = (event: MouseEvent, href: string) => {
   activeHref.value = href;
   pendingHref = href;
 
-  const topOffset = href === '#contact-information' ? 150 : 0;
-  const targetTop = target.getBoundingClientRect().top + window.scrollY - topOffset;
-
   window.history.pushState(null, '', href);
-  window.scrollTo({ top: Math.max(0, targetTop), behavior: 'smooth' });
+
+  if (href === '#home') {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  } else {
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
 
   if (navigationUnlockTimer !== undefined) {
     window.clearTimeout(navigationUnlockTimer);
@@ -116,14 +131,25 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <header class="pointer-events-none fixed inset-x-0 top-0 z-50 h-[220px]">
+  <header class="desktop-ui-scale-fixed pointer-events-none fixed left-0 top-0 z-50 h-[220px]">
     <div
-      class="absolute inset-x-0 top-0 h-[210px] bg-gradient-to-b from-aurora-mint via-aurora-mint/55 to-transparent"
+      class="absolute inset-x-0 top-0 h-[210px]"
+      :class="
+        sectionBackdropStyle
+          ? undefined
+          : 'bg-gradient-to-b from-aurora-mint via-aurora-mint/55 to-transparent'
+      "
+      :style="sectionBackdropStyle"
       aria-hidden="true"
     />
 
     <div
-      class="pointer-events-auto relative z-10 mx-auto mt-[46px] flex h-[90px] w-[min(calc(100%_-_2rem),1680px)] items-center rounded-[45px] bg-white px-[45px] shadow-[0_10px_28px_rgba(46,126,100,0.16)] ring-1 ring-white/80 max-xl:px-8"
+      class="site-navbar__panel pointer-events-auto relative z-10 mx-auto mt-[46px] flex h-[90px] w-[min(calc(100%_-_2rem),1680px)] items-center rounded-[45px] bg-white px-[45px] ring-1 ring-white/80 max-xl:px-8"
+      :class="
+        usesLightSectionBackdrop
+          ? 'shadow-[0_10px_28px_rgba(0,0,0,0.08)]'
+          : 'shadow-[0_10px_28px_rgba(46,126,100,0.16)]'
+      "
     >
       <a href="#home" class="shrink-0" aria-label="Aurora home">
         <img

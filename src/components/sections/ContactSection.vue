@@ -157,7 +157,7 @@ const optionLabelClass =
 </script>
 
 <template>
-  <section id="contact" class="bg-aurora-mint pb-[190px] pt-[114px]">
+  <section id="contact" class="desktop-ui-scale bg-aurora-mint pb-[190px] pt-[114px]">
     <div class="aurora-container text-white">
       <div class="text-center">
         <h2 class="font-display text-[clamp(54px,4.69vw,90px)] font-black leading-[1.16]">

@@ -63,4 +63,46 @@
     font-weight: 900;
     line-height: 1.12;
   }
+
+  .desktop-ui-scale,
+  .desktop-ui-scale-fixed {
+    width: 100%;
+  }
+}
+
+@media (min-width: 1200px) and (max-width: 1319.98px) {
+  #contact-information {
+    scroll-margin-top: 70px;
+  }
+
+  .desktop-ui-scale,
+  .desktop-ui-scale-fixed {
+    zoom: 0.94;
+  }
+}
+
+@media (min-width: 1320px) and (max-width: 1439.98px) {
+  #contact-information {
+    scroll-margin-top: 70px;
+  }
+
+  .desktop-ui-scale,
+  .desktop-ui-scale-fixed {
+    zoom: 0.89;
+  }
+}
+
+@media (min-width: 1440px) {
+  html {
+    scroll-padding-top: 136px;
+  }
+
+  #contact-information {
+    scroll-margin-top: 70px;
+  }
+
+  .desktop-ui-scale,
+  .desktop-ui-scale-fixed {
+    zoom: 0.833333;
+  }
 }

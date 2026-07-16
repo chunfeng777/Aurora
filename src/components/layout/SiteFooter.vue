@@ -42,7 +42,7 @@ const isContactColumn = (links: readonly { readonly label: string; readonly href
 <template>
   <footer
     id="footer"
-    class="bg-white pb-[100px] pt-[156px] text-aurora-mint max-lg:pb-16 max-lg:pt-20"
+    class="desktop-ui-scale bg-white pb-[100px] pt-[156px] text-aurora-mint max-lg:pb-16 max-lg:pt-20"
   >
     <div class="aurora-container">
       <div class="pl-[31px] max-lg:pl-0">

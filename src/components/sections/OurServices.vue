@@ -7,7 +7,7 @@ const { serviceCards, servicesHeading } = useSiteContent();
 </script>
 
 <template>
-  <section id="services" class="bg-aurora-mint pb-[165px] pt-[181px]">
+  <section id="services" class="desktop-ui-scale bg-aurora-mint pb-[165px] pt-[181px]">
     <div class="aurora-container">
       <div class="text-center text-white">
         <h2 class="font-display text-[clamp(42px,3.125vw,60px)] font-black leading-[1.2]">

@@ -5,7 +5,10 @@ const { aboutContent } = useSiteContent();
 </script>
 
 <template>
-  <section id="about" class="bg-aurora-white pb-[220px] pt-[221px]">
+  <section
+    id="about"
+    class="desktop-ui-scale bg-aurora-white pb-[220px] pt-[221px] 2xl:pb-[100px] 2xl:pt-[100px]"
+  >
     <div class="aurora-container grid items-start gap-[93px] xl:grid-cols-[minmax(0,908px)_579px]">
       <div>
         <h2
@@ -15,7 +18,7 @@ const { aboutContent } = useSiteContent();
         </h2>
 
         <div
-          class="mt-[69px] max-w-[908px] space-y-[35px] font-body text-[clamp(19px,1.3vw,25px)] leading-[1.4] text-aurora-gray"
+          class="mt-[69px] max-w-[908px] space-y-[35px] font-body text-[clamp(19px,1.3vw,25px)] leading-[1.4] text-aurora-gray 2xl:mt-[50px] 2xl:space-y-[28px]"
         >
           <p v-for="paragraph in aboutContent.paragraphs" :key="paragraph">
             {{ paragraph }}
@@ -24,7 +27,7 @@ const { aboutContent } = useSiteContent();
       </div>
 
       <article
-        class="relative min-h-[979px] overflow-hidden rounded-[16px] bg-aurora-mint max-xl:min-h-[720px]"
+        class="relative min-h-[979px] overflow-hidden rounded-[16px] bg-aurora-mint max-xl:min-h-[720px] 2xl:min-h-[900px]"
       >
         <img
           :src="aboutContent.image.src"
@@ -32,12 +35,12 @@ const { aboutContent } = useSiteContent();
           :width="aboutContent.image.width"
           :height="aboutContent.image.height"
           loading="lazy"
-          class="absolute inset-x-0 bottom-0 h-[868px] w-full object-cover max-xl:h-full"
+          class="absolute inset-x-0 bottom-0 h-[868px] w-full object-cover max-xl:h-full 2xl:h-[790px]"
         />
 
         <div
           aria-hidden="true"
-          class="about-testimonial__overlay absolute inset-x-0 top-0 z-[2] h-[684px] rounded-[16px] max-xl:h-[70%]"
+          class="about-testimonial__overlay absolute inset-x-0 top-0 z-[2] h-[684px] rounded-[16px] max-xl:h-[70%] 2xl:h-[630px]"
         />
 
         <blockquote class="absolute inset-0 z-10 font-body font-normal text-white">

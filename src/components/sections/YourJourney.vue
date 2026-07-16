@@ -6,7 +6,7 @@ const { journeyClosing, journeyCtaLabel, journeyHeading, journeySteps } = useSit
 </script>
 
 <template>
-  <section id="journey" class="bg-aurora-mint pb-[195px] pt-[107px] text-white">
+  <section id="journey" class="desktop-ui-scale bg-aurora-mint pb-[195px] pt-[107px] text-white">
     <div class="aurora-container">
       <div class="text-center">
         <h2 class="font-display text-[clamp(42px,3.125vw,60px)] font-black leading-[1.2]">
