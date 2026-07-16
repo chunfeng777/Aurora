@@ -1,6 +1,7 @@
 <script setup lang="ts">
 interface AnimatedArrowProps {
   endOffset?: number;
+  iconSize?: number;
   returnOffset?: number;
   startOffset?: number;
   strokeWidth?: number;
@@ -8,6 +9,7 @@ interface AnimatedArrowProps {
 
 const {
   endOffset = 6,
+  iconSize = 27,
   returnOffset = 3,
   startOffset = -10,
   strokeWidth = 5.2,
@@ -26,7 +28,8 @@ const {
   >
     <span class="animated-arrow__dot col-start-1 row-start-1 size-[5px] rounded-full bg-current" />
     <svg
-      class="animated-arrow__chevron col-start-1 row-start-1 size-[27px]"
+      class="animated-arrow__chevron col-start-1 row-start-1"
+      :style="{ height: `${iconSize}px`, width: `${iconSize}px` }"
       viewBox="0 0 32 32"
       fill="none"
     >

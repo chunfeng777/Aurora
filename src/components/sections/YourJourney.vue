@@ -56,10 +56,11 @@ const { journeyClosing, journeyCtaLabel, journeyHeading, journeySteps } = useSit
           <span>{{ journeyCtaLabel }}</span>
           <AnimatedArrow
             :end-offset="9"
+            :icon-size="34"
             :return-offset="4"
             :start-offset="-16"
             :stroke-width="7.2"
-            class="pointer-events-none absolute right-[72px] z-10 max-md:right-[24px]"
+            class="pointer-events-none absolute right-[62px] top-[calc(50%+4px)] z-10 -translate-y-1/2 max-md:right-[20px]"
           />
         </a>
       </div>
