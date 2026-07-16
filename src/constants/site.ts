@@ -357,7 +357,7 @@ export const footerContent: FooterContent = {
       title: 'Contact Us',
       links: [
         { label: 'info@auroraifa.com', href: 'mailto:info@auroraifa.com' },
-        { label: 'WeChat: abcdedf', href: '#' },
+        { label: 'abcdedf', href: '#' },
         { label: '765-881-0394', href: 'tel:+17658810394' },
       ],
     },

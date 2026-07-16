@@ -204,7 +204,7 @@ export const zhCopy: SiteCopy = {
     linkLabels: [
       ['首页', '关于我们', '服务内容', '服务流程', '联系我们'],
       ['生育咨询与试管', '资源与诊所匹配', '专属礼宾服务'],
-      ['info@auroraifa.com', 'WeChat: abcdedf', '765-881-0394'],
+      ['info@auroraifa.com', 'abcdedf', '765-881-0394'],
     ],
     copyright: '© 2026 Aurora International Family Advisory Inc. All rights reserved.',
   },

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import contactWechatIconUrl from '@/assets/images/contact-wechat.svg';
 import contactWhatsappIconUrl from '@/assets/images/contact-whatsapp.svg';
 import { useSiteContent } from '@/composables/useSiteContent';
 import { socialLinks } from '@/constants/site';
@@ -34,6 +35,8 @@ const getContactIconKey = (label: string) => {
 
   return 'brand';
 };
+
+const isWechatContact = (label: string) => label === 'abcdedf';
 
 const isContactColumn = (links: readonly { readonly label: string; readonly href: string }[]) =>
   links.some((link) => link.label.includes('@') || link.label.startsWith('+'));
@@ -80,8 +83,17 @@ const isContactColumn = (links: readonly { readonly label: string; readonly href
                   class="font-body text-[25px] font-bold leading-[35px] transition-opacity duration-200 hover:opacity-75 max-sm:text-[20px] max-sm:leading-[30px]"
                   :class="isContactColumn(column.links) ? 'flex items-center gap-[18px]' : ''"
                 >
+                  <img
+                    v-if="isContactColumn(column.links) && isWechatContact(link.label)"
+                    :src="contactWechatIconUrl"
+                    alt=""
+                    width="82"
+                    height="82"
+                    loading="lazy"
+                    class="size-[28px] shrink-0"
+                  />
                   <svg
-                    v-if="isContactColumn(column.links)"
+                    v-else-if="isContactColumn(column.links)"
                     class="size-[28px] shrink-0 fill-current"
                     viewBox="0 0 24 24"
                     aria-hidden="true"
