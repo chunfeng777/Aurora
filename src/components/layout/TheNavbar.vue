@@ -9,15 +9,16 @@ const { locale, setLocale } = useLocale();
 const { heroContent, navItems } = useSiteContent();
 
 const activeHref = ref('#home');
+const activeSurfaceHref = ref('#home');
 const usesLightSectionBackdrop = computed(() =>
-  ['#about', '#process'].includes(activeHref.value),
+  ['#about', '#process', '#why-choose-us'].includes(activeSurfaceHref.value),
 );
 const sectionBackdropStyle = computed(() => {
   if (usesLightSectionBackdrop.value) {
     return { background: '#ffffff' };
   }
 
-  if (['#services', '#contact-information'].includes(activeHref.value)) {
+  if (['#services', '#contact', '#contact-information'].includes(activeSurfaceHref.value)) {
     return { background: '#83d4b3' };
   }
 
@@ -32,20 +33,26 @@ let pendingHref: string | undefined;
 let navigationUnlockTimer: number | undefined;
 
 const syncActiveHrefFromHash = () => {
-  const matchingItem = navItems.value.find((item) => item.href === window.location.hash);
+  const hashHref = window.location.hash || '#home';
+  const matchingItem = navItems.value.find((item) => item.href === hashHref);
+
+  activeSurfaceHref.value = hashHref;
   activeHref.value = matchingItem?.href ?? '#home';
 };
 
 const observeAvailableSections = () => {
-  navItems.value.forEach((item) => {
-    const section = document.querySelector(item.href);
+  const observeSection = (href: string) => {
+    const section = document.querySelector(href);
 
     if (section && !observedSections.has(section)) {
       observedSections.add(section);
-      observedSectionHrefs.set(section, item.href);
+      observedSectionHrefs.set(section, href);
       sectionObserver?.observe(section);
     }
-  });
+  };
+
+  navItems.value.forEach((item) => observeSection(item.href));
+  observeSection('#why-choose-us');
 };
 
 const clearPendingNavigation = () => {
@@ -66,6 +73,7 @@ const handleNavigationClick = (event: MouseEvent, href: string) => {
 
   event.preventDefault();
   activeHref.value = href;
+  activeSurfaceHref.value = href;
   pendingHref = href;
 
   window.history.pushState(null, '', href);
@@ -95,6 +103,7 @@ onMounted(() => {
 
         if (pendingSectionReached) {
           activeHref.value = pendingHref;
+          activeSurfaceHref.value = pendingHref;
           clearPendingNavigation();
         }
 
@@ -106,7 +115,13 @@ onMounted(() => {
         .sort((first, second) => first.boundingClientRect.top - second.boundingClientRect.top)[0];
 
       if (currentSection?.target.id) {
-        activeHref.value = observedSectionHrefs.get(currentSection.target) ?? '#home';
+        const currentHref = observedSectionHrefs.get(currentSection.target) ?? '#home';
+
+        activeSurfaceHref.value = currentHref;
+
+        if (navItems.value.some((item) => item.href === currentHref)) {
+          activeHref.value = currentHref;
+        }
       }
     },
     {

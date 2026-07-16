@@ -5,7 +5,10 @@ const { whyChooseUsCards, whyChooseUsHeading } = useSiteContent();
 </script>
 
 <template>
-  <section id="why-choose-us" class="desktop-ui-scale bg-white pb-[128px] pt-[141px]">
+  <section
+    id="why-choose-us"
+    class="desktop-ui-scale bg-white pb-[128px] pt-[141px] 2xl:pb-[177px] 2xl:pt-[190px]"
+  >
     <div class="aurora-container">
       <div class="mx-auto max-w-[1549px] text-center">
         <h2
