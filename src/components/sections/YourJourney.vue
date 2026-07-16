@@ -54,7 +54,13 @@ const { journeyClosing, journeyCtaLabel, journeyHeading, journeySteps } = useSit
           class="group relative mt-[53px] inline-flex h-[90px] w-[min(817px,100%)] items-center justify-center rounded-[45px] bg-white px-[86px] font-display text-[clamp(32px,2.19vw,42px)] font-bold leading-[59px] text-aurora-mint shadow-sm transition-transform duration-200 hover:-translate-y-1 max-md:h-[72px] max-md:px-16"
         >
           <span>{{ journeyCtaLabel }}</span>
-          <AnimatedArrow class="pointer-events-none absolute right-[28px] z-10" />
+          <AnimatedArrow
+            :end-offset="9"
+            :return-offset="4"
+            :start-offset="-16"
+            :stroke-width="7.2"
+            class="pointer-events-none absolute right-[72px] z-10 max-md:right-[24px]"
+          />
         </a>
       </div>
     </div>
