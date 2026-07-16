@@ -169,7 +169,7 @@ onBeforeUnmount(() => {
         class="relative mt-[54px] inline-flex h-[75px] w-[min(521px,100%)] items-center justify-center rounded-[38px] bg-aurora-mint px-14 text-center font-display text-[clamp(24px,1.7vw,33px)] font-black leading-none text-white shadow-auroraCard transition-transform duration-200 hover:-translate-y-1 focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-white/80"
       >
         <span>{{ heroContent.ctaLabel }}</span>
-        <AnimatedArrow class="absolute right-[26px]" />
+        <AnimatedArrow class="pointer-events-none absolute right-[24px] z-10" />
       </a>
     </div>
 

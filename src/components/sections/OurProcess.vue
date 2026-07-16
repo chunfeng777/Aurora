@@ -1,8 +1,6 @@
 <script setup lang="ts">
-import { useLocale } from '@/composables/useLocale';
 import { useSiteContent } from '@/composables/useSiteContent';
 
-const { locale } = useLocale();
 const { processCtaLabel, processHeading, processSteps } = useSiteContent();
 </script>
 
@@ -29,22 +27,23 @@ const { processCtaLabel, processHeading, processSteps } = useSiteContent();
           class="process-card relative h-[245px] text-center"
         >
           <div class="process-card__surface absolute inset-x-0 bottom-0 h-[150px] rounded-auroraCard bg-white shadow-auroraCard">
-            <div
-              class="process-card__number absolute left-1/2 top-[-22px] grid size-[103px] -translate-x-1/2 place-items-center rounded-full bg-aurora-mint font-display text-[60px] font-black leading-none text-white"
-            >
-              {{ step.index }}
-            </div>
+            <div class="process-card__summary absolute inset-x-0 bottom-0 h-[150px]">
+              <div
+                class="process-card__number absolute left-1/2 top-[-22px] grid size-[103px] -translate-x-1/2 place-items-center rounded-full bg-aurora-mint font-display text-[60px] font-black leading-none text-white"
+              >
+                {{ step.index }}
+              </div>
 
-            <h3
-              class="process-card__title absolute bottom-[22px] left-5 right-5 font-display text-[30px] font-black leading-[42px] text-aurora-mint"
-            >
-              {{ step.title }}
-            </h3>
+              <h3
+                class="process-card__title absolute bottom-[22px] left-3 right-3 whitespace-nowrap font-display text-[clamp(20px,1.56vw,30px)] font-black leading-[42px] text-aurora-mint"
+              >
+                {{ step.title }}
+              </h3>
+            </div>
 
             <p
               :id="`process-step-${step.index}-description`"
-              class="process-card__description absolute bottom-[25px] left-1/2 w-[calc(100%-24px)] -translate-x-1/2 text-center font-body leading-[26px] text-white"
-              :class="locale === 'zh' && step.index === 3 ? 'whitespace-nowrap text-[14px]' : 'text-[18px]'"
+              class="process-card__description absolute bottom-[25px] left-1/2 flex h-[52px] w-[calc(100%-24px)] -translate-x-1/2 items-center justify-center text-center font-body text-[18px] leading-[26px] text-white"
             >
               {{ step.description }}
             </p>
@@ -66,32 +65,31 @@ const { processCtaLabel, processHeading, processSteps } = useSiteContent();
 <style scoped>
 .process-card__surface {
   transition:
-    height 1400ms cubic-bezier(0.4, 0, 0.2, 1),
-    background-color 760ms ease,
-    box-shadow 1200ms cubic-bezier(0.4, 0, 0.2, 1);
+    height 500ms cubic-bezier(0.4, 0, 0.2, 1),
+    background-color 350ms ease,
+    box-shadow 500ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.process-card__summary {
+  transition: transform 500ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .process-card__number {
   transition:
-    top 1200ms cubic-bezier(0.4, 0, 0.2, 1),
-    background-color 760ms ease,
-    color 760ms ease,
-    transform 1200ms cubic-bezier(0.4, 0, 0.2, 1);
+    background-color 350ms ease,
+    color 350ms ease;
 }
 
 .process-card__title {
-  transition:
-    bottom 1200ms cubic-bezier(0.4, 0, 0.2, 1),
-    color 760ms ease,
-    transform 1200ms cubic-bezier(0.4, 0, 0.2, 1);
+  transition: color 350ms ease;
 }
 
 .process-card__description {
   opacity: 0;
-  transform: translate(-50%, 14px);
+  transform: translate(-50%, 10px);
   transition:
     opacity 220ms ease,
-    transform 320ms cubic-bezier(0.4, 0, 0.2, 1);
+    transform 280ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .process-card:is(:hover, :focus) .process-card__surface {
@@ -100,23 +98,23 @@ const { processCtaLabel, processHeading, processSteps } = useSiteContent();
   box-shadow: 0 24px 46px rgb(38 135 103 / 22%);
 }
 
+.process-card:is(:hover, :focus) .process-card__summary {
+  transform: translateY(-66px);
+}
+
 .process-card:is(:hover, :focus) .process-card__number {
-  top: 24px;
   background-color: white;
   color: var(--color-mint);
-  transform: translateX(-50%) scale(0.72);
 }
 
 .process-card:is(:hover, :focus) .process-card__title {
-  bottom: 90px;
   color: white;
-  transform: scale(0.9);
 }
 
 .process-card:is(:hover, :focus) .process-card__description {
   opacity: 1;
   transform: translate(-50%, 0);
-  transition-delay: 0ms;
+  transition-delay: 180ms;
 }
 
 .process-card:focus-visible {
@@ -130,6 +128,7 @@ const { processCtaLabel, processHeading, processSteps } = useSiteContent();
 
 @media (prefers-reduced-motion: reduce) {
   .process-card__surface,
+  .process-card__summary,
   .process-card__number,
   .process-card__title,
   .process-card__description {

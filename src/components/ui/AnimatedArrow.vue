@@ -1,7 +1,11 @@
 <template>
   <span class="animated-arrow grid size-9 shrink-0 place-items-center" aria-hidden="true">
-    <span class="animated-arrow__dot absolute size-[5px] rounded-full bg-current" />
-    <svg class="animated-arrow__chevron size-[27px]" viewBox="0 0 32 32" fill="none">
+    <span class="animated-arrow__dot col-start-1 row-start-1 size-[5px] rounded-full bg-current" />
+    <svg
+      class="animated-arrow__chevron col-start-1 row-start-1 size-[27px]"
+      viewBox="0 0 32 32"
+      fill="none"
+    >
       <path
         d="M11 7.5L19.5 16L11 24.5"
         stroke="currentColor"
@@ -14,10 +18,6 @@
 </template>
 
 <style scoped>
-.animated-arrow {
-  position: relative;
-}
-
 .animated-arrow__dot {
   animation: arrow-dot 1.6s ease-in-out infinite;
 }
