@@ -20,11 +20,10 @@ const { serviceCards, servicesHeading } = useSiteContent();
 
       <div class="mt-[105px] grid items-stretch gap-[70px] lg:grid-cols-3">
         <article
-          v-for="(card, index) in serviceCards"
+          v-for="card in serviceCards"
           :key="card.stage"
           class="service-card relative h-[570px] overflow-hidden rounded-auroraCard bg-white p-[20px_19px_74px] text-center shadow-auroraGlow sm:h-[530px] 2xl:h-[496px]"
           :class="{
-            'service-card--coordination': index === 1,
             'service-card--chinese-details': locale === 'zh',
           }"
         >
@@ -35,7 +34,7 @@ const { serviceCards, servicesHeading } = useSiteContent();
               class="service-card__summary absolute inset-[18px_28px] flex flex-col items-center justify-center"
               aria-hidden="true"
             >
-              <p class="font-display text-[20px] font-bold leading-[1.2] text-aurora-mint sm:text-[clamp(20px,1.35vw,26px)]">
+              <p class="-translate-y-[8px] font-display text-[22px] font-bold leading-[1.2] text-aurora-mint sm:text-[clamp(22px,1.46vw,28px)]">
                 {{ card.stage }}
               </p>
               <img
@@ -47,20 +46,20 @@ const { serviceCards, servicesHeading } = useSiteContent();
                 class="mt-[31px] size-[62px] shrink-0 sm:size-[clamp(68px,4.17vw,80px)]"
               />
               <p
-                class="mt-[34px] max-w-[418px] whitespace-pre-line font-display text-[26px] font-bold leading-[1.2] text-aurora-mint sm:text-[clamp(26px,1.77vw,34px)]"
+                class="mt-[34px] max-w-[418px] whitespace-pre-line font-display text-[28px] font-bold leading-[1.2] text-aurora-mint sm:text-[clamp(28px,1.88vw,36px)]"
               >
                 {{ card.title }}
               </p>
             </div>
 
-            <div class="service-card__details absolute inset-y-5 left-7 right-7 flex flex-col items-center justify-center">
+            <div class="service-card__details absolute bottom-7 left-7 right-7 top-3 flex flex-col items-center justify-start pt-[20px]">
               <h3
                 class="max-w-[418px] whitespace-pre-line font-display text-[28px] font-bold leading-[1.35] text-aurora-mint sm:text-[clamp(31px,2.08vw,40px)] sm:leading-normal"
               >
                 {{ card.title }}
               </h3>
               <p
-                class="w-full max-w-[389px] text-left font-body text-[18px] leading-[30px] text-aurora-mint-dark sm:text-[20px] sm:leading-[35px]"
+                class="w-full max-w-[389px] text-left font-body text-[19px] font-medium leading-[30px] text-aurora-mint-dark sm:text-[21px] sm:leading-[34px]"
               >
                 {{ card.description }}
               </p>
@@ -97,7 +96,7 @@ const { serviceCards, servicesHeading } = useSiteContent();
 }
 
 .service-card__details {
-  gap: clamp(24px, 1.46vw, 28px);
+  gap: clamp(20px, 1.25vw, 24px);
   opacity: 0;
   transform: translateY(32px);
   transition-delay: 0ms;
@@ -109,16 +108,14 @@ const { serviceCards, servicesHeading } = useSiteContent();
 }
 
 .service-card__details p {
-  font-size: clamp(15px, 1.04vw, 20px);
-  line-height: clamp(24px, 1.56vw, 30px);
-}
-
-.service-card--coordination .service-card__details p {
-  font-size: clamp(14px, 0.98vw, 19px);
+  font-size: clamp(17px, 1.09vw, 21px);
+  font-weight: 500;
+  line-height: clamp(27px, 1.77vw, 34px);
 }
 
 .service-card--chinese-details .service-card__details {
   justify-content: center;
+  padding-top: 0;
 }
 
 .service-card--chinese-details .service-card__details p {

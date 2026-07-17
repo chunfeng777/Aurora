@@ -63,8 +63,8 @@ export const heroContent: HeroContent = {
   background: {
     src: heroFamilyBeachVideoUrl,
     poster: heroVideoPosterUrl,
-    width: 1280,
-    height: 720,
+    width: 1920,
+    height: 1080,
   },
   audioSrc: heroBackgroundAudioUrl,
 };
@@ -160,12 +160,12 @@ export const processSteps: readonly ProcessStep[] = [
   {
     index: 1,
     title: 'Initial Consultation',
-    description: 'Share your goals, preferences, and timeline in a private consultation.',
+    description: 'Understand your goals, timeline,\nand preferences.',
   },
   {
     index: 2,
     title: 'Strategy & Planning',
-    description: 'Build a personalized strategy with clear priorities, partners, and next steps.',
+    description: 'Define a personalized approach based\non your needs.',
   },
   {
     index: 3,
@@ -175,7 +175,7 @@ export const processSteps: readonly ProcessStep[] = [
   {
     index: 4,
     title: 'Medical Process',
-    description: 'Coordinate procedures, timelines, and communication.',
+    description: 'Coordinate procedures, timelines,\nand communication.',
   },
   {
     index: 5,
@@ -319,12 +319,12 @@ export const contactContent: ContactContent = {
     },
     {
       label: 'WhatsApp',
-      value: '765-881-0394',
+      value: '+1 (818) 281-3078',
       icon: { src: contactWhatsappIconUrl, alt: '', width: 82, height: 82 },
     },
     {
       label: 'WeChat',
-      value: 'abcdedf',
+      value: 'michelle_aurora',
       icon: { src: contactWechatIconUrl, alt: '', width: 82, height: 82 },
     },
   ],
@@ -357,8 +357,8 @@ export const footerContent: FooterContent = {
       title: 'Contact Us',
       links: [
         { label: 'info@auroraifa.com', href: 'mailto:info@auroraifa.com' },
-        { label: 'abcdedf', href: '#' },
-        { label: '765-881-0394', href: 'tel:+17658810394' },
+        { label: 'michelle_aurora', href: '#' },
+        { label: '+1 (818) 281-3078', href: 'tel:+18182813078' },
       ],
     },
   ],

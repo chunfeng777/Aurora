@@ -11,48 +11,86 @@ const { heroContent, navItems } = useSiteContent();
 const activeHref = ref('#home');
 const activeSurfaceHref = ref('#home');
 const usesLightSectionBackdrop = computed(() =>
-  ['#about', '#process', '#why-choose-us'].includes(activeSurfaceHref.value),
+  ['#about', '#process', '#why-choose-us', '#footer'].includes(activeSurfaceHref.value),
 );
-const sectionBackdropStyle = computed(() => {
+const activeSectionFillClass = computed(() => {
   if (usesLightSectionBackdrop.value) {
-    return { background: '#ffffff' };
+    return 'bg-white';
   }
 
-  if (['#services', '#contact', '#contact-information'].includes(activeSurfaceHref.value)) {
-    return { background: '#83d4b3' };
+  if (
+    ['#services', '#journey', '#contact', '#contact-information'].includes(
+      activeSurfaceHref.value,
+    )
+  ) {
+    return 'bg-aurora-mint';
   }
 
-  return undefined;
+  return 'bg-transparent';
 });
-const observedSections = new Set<Element>();
-const observedSectionHrefs = new Map<Element, string>();
 
-let sectionObserver: IntersectionObserver | undefined;
 let contentObserver: MutationObserver | undefined;
 let pendingHref: string | undefined;
 let navigationUnlockTimer: number | undefined;
+let scrollFrame: number | undefined;
+
+const surfaceSections = [
+  { href: '#home', navHref: '#home' },
+  { href: '#why-choose-us', navHref: '#home' },
+  { href: '#services', navHref: '#services' },
+  { href: '#process', navHref: '#process' },
+  { href: '#journey', navHref: '#process' },
+  { href: '#about', navHref: '#about' },
+  { href: '#family-cta', navHref: '#about' },
+  { href: '#contact', navHref: '#contact-information' },
+  { href: '#footer', navHref: '#contact-information' },
+] as const;
+
+const getSurfaceSection = (href: string) =>
+  surfaceSections.find((section) => section.href === href);
 
 const syncActiveHrefFromHash = () => {
   const hashHref = window.location.hash || '#home';
   const matchingItem = navItems.value.find((item) => item.href === hashHref);
+  const matchingSurface = getSurfaceSection(hashHref);
 
   activeSurfaceHref.value = hashHref;
-  activeHref.value = matchingItem?.href ?? '#home';
+  activeHref.value = matchingItem?.href ?? matchingSurface?.navHref ?? '#home';
 };
 
-const observeAvailableSections = () => {
-  const observeSection = (href: string) => {
-    const section = document.querySelector(href);
+const syncActiveSectionFromScroll = () => {
+  const probeY = Math.min(220, window.innerHeight * 0.25);
+  const currentSection = surfaceSections.find(({ href }) => {
+    const element = document.querySelector(href);
 
-    if (section && !observedSections.has(section)) {
-      observedSections.add(section);
-      observedSectionHrefs.set(section, href);
-      sectionObserver?.observe(section);
+    if (!element) {
+      return false;
     }
-  };
 
-  navItems.value.forEach((item) => observeSection(item.href));
-  observeSection('#why-choose-us');
+    const bounds = element.getBoundingClientRect();
+    return bounds.top <= probeY && bounds.bottom > probeY;
+  });
+
+  if (!currentSection) {
+    return;
+  }
+
+  activeSurfaceHref.value = currentSection.href;
+
+  if (!pendingHref) {
+    activeHref.value = currentSection.navHref;
+  }
+};
+
+const scheduleSectionSync = () => {
+  if (scrollFrame !== undefined) {
+    return;
+  }
+
+  scrollFrame = window.requestAnimationFrame(() => {
+    scrollFrame = undefined;
+    syncActiveSectionFromScroll();
+  });
 };
 
 const clearPendingNavigation = () => {
@@ -93,68 +131,37 @@ const handleNavigationClick = (event: MouseEvent, href: string) => {
 
 onMounted(() => {
   syncActiveHrefFromHash();
+  scheduleSectionSync();
 
-  sectionObserver = new IntersectionObserver(
-    (entries) => {
-      if (pendingHref) {
-        const pendingSectionReached = entries.some(
-          (entry) => entry.isIntersecting && observedSectionHrefs.get(entry.target) === pendingHref,
-        );
-
-        if (pendingSectionReached) {
-          activeHref.value = pendingHref;
-          activeSurfaceHref.value = pendingHref;
-          clearPendingNavigation();
-        }
-
-        return;
-      }
-
-      const currentSection = entries
-        .filter((entry) => entry.isIntersecting)
-        .sort((first, second) => first.boundingClientRect.top - second.boundingClientRect.top)[0];
-
-      if (currentSection?.target.id) {
-        const currentHref = observedSectionHrefs.get(currentSection.target) ?? '#home';
-
-        activeSurfaceHref.value = currentHref;
-
-        if (navItems.value.some((item) => item.href === currentHref)) {
-          activeHref.value = currentHref;
-        }
-      }
-    },
-    {
-      rootMargin: '-18% 0px -68% 0px',
-      threshold: 0,
-    },
-  );
-
-  observeAvailableSections();
-
-  contentObserver = new MutationObserver(observeAvailableSections);
+  contentObserver = new MutationObserver(scheduleSectionSync);
   contentObserver.observe(document.body, { childList: true, subtree: true });
+  window.addEventListener('scroll', scheduleSectionSync, { passive: true });
+  window.addEventListener('resize', scheduleSectionSync);
   window.addEventListener('hashchange', syncActiveHrefFromHash);
 });
 
 onBeforeUnmount(() => {
   clearPendingNavigation();
-  sectionObserver?.disconnect();
   contentObserver?.disconnect();
+  window.removeEventListener('scroll', scheduleSectionSync);
+  window.removeEventListener('resize', scheduleSectionSync);
   window.removeEventListener('hashchange', syncActiveHrefFromHash);
+
+  if (scrollFrame !== undefined) {
+    window.cancelAnimationFrame(scrollFrame);
+  }
 });
 </script>
 
 <template>
   <header class="desktop-ui-scale-fixed pointer-events-none fixed left-0 top-0 z-50 h-[220px]">
     <div
-      class="absolute inset-x-0 top-0 h-[210px]"
-      :class="
-        sectionBackdropStyle
-          ? undefined
-          : 'bg-gradient-to-b from-aurora-mint via-aurora-mint/55 to-transparent'
-      "
-      :style="sectionBackdropStyle"
+      class="absolute inset-x-0 top-0 h-[220px]"
+      :class="activeSectionFillClass"
+      aria-hidden="true"
+    />
+    <div
+      class="absolute inset-x-0 top-0 h-[210px] bg-gradient-to-b from-aurora-mint via-aurora-mint/55 to-transparent"
       aria-hidden="true"
     />
 

@@ -122,11 +122,11 @@ export const zhCopy: SiteCopy = {
   },
   processSteps: [
     { title: '明确目标规划', description: '全面了解您的目标、规划及时间安排，帮助您梳理适合自己的方向。' },
-    { title: '开启专属方案', description: '结合沟通结果，制定专属服务方案，并与您共同确认后续服务计划。' },
-    { title: '匹配专业资源', description: '根据专属方案，匹配合适的诊所、专家及专业机构。' },
-    { title: '推进医疗流程', description: '统筹医疗流程，协调各项关键节点，确保每一步顺利推进。' },
-    { title: '跟进孕期进展', description: '持续跟进孕期进展，同步重要信息，并协助完成赴美前的各项准备。' },
-    { title: '迎接家庭新章', description: '协助完成证件办理及后续安排，陪伴您顺利开启家庭新篇章。' },
+    { title: '开启专属方案', description: '结合沟通结果，制定专属服务方案，并与您\n共同确认后续服务计划。' },
+    { title: '匹配专业资源', description: '根据专属方案，匹配合适的诊所、专家\n及专业机构。' },
+    { title: '推进医疗流程', description: '统筹医疗流程，协调各项关键节点，确保\n每一步顺利推进。' },
+    { title: '跟进孕期进展', description: '持续跟进孕期进展，同步重要信息，并协助\n完成赴美前的各项准备。' },
+    { title: '迎接家庭新章', description: '协助完成证件办理及后续安排，陪伴您\n顺利开启家庭新篇章。' },
   ],
   processCtaLabel: '了解更多服务流程',
   journeyHeading: {
@@ -159,10 +159,10 @@ export const zhCopy: SiteCopy = {
       description: '即使离开美国，我们的陪伴也不会因此结束。随着孩子成长，无论是未来赴美求学、置业安家，还是其他跨境生活规划，当您需要帮助时，我们依然会为您提供专业支持，陪伴您的家庭迎接未来每一个重要阶段。',
     },
   ],
-  journeyClosing: '每一步，都有清晰透明的指引与贴心陪伴。',
+  journeyClosing: '每一步，都有清晰透明的指引与贴心的陪伴。',
   journeyCtaLabel: '开启您的旅程',
   about: {
-    title: '关于 Aurora',
+    title: '我们的服务理念',
     paragraphs: [
       '我们始终相信，建立一个家庭，不应该因为地域、信息或流程，而变得遥不可及。',
       '每一个家庭都有属于自己的故事，也没有任何两段旅程会完全相同。每一次选择，都承载着情感、现实与未来，因此值得被认真倾听，也值得拥有真正适合自己的解决方案。',
@@ -195,7 +195,7 @@ export const zhCopy: SiteCopy = {
     submitLabel: '预约专属咨询',
     informationTitle: '联系我们',
     methodLabels: ['邮箱', 'WhatsApp', '微信'],
-    methodValues: ['info@auroraifa.com', '765-881-0394', 'abcdedf'],
+    methodValues: ['info@auroraifa.com', '+1 (818) 281-3078', 'michelle_aurora'],
     privacyNote: '我们尊重每一位客户的隐私，您提供的所有信息都将严格保密，并仅用于本次咨询。',
   },
   footer: {
@@ -204,7 +204,7 @@ export const zhCopy: SiteCopy = {
     linkLabels: [
       ['首页', '关于我们', '服务内容', '服务流程', '联系我们'],
       ['生育咨询与试管', '资源与诊所匹配', '专属礼宾服务'],
-      ['info@auroraifa.com', 'abcdedf', '765-881-0394'],
+      ['info@auroraifa.com', 'michelle_aurora', '+1 (818) 281-3078'],
     ],
     copyright: '© 2026 Aurora International Family Advisory Inc. All rights reserved.',
   },

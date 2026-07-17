@@ -36,7 +36,7 @@ const getContactIconKey = (label: string) => {
   return 'brand';
 };
 
-const isWechatContact = (label: string) => label === 'abcdedf';
+const isWechatContact = (label: string) => label === 'michelle_aurora';
 
 const isContactColumn = (links: readonly { readonly label: string; readonly href: string }[]) =>
   links.some((link) => link.label.includes('@') || link.label.startsWith('+'));
